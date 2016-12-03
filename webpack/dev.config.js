@@ -7,6 +7,8 @@ var APP_DIR = path.resolve(__dirname, '../src');
 var config = {
   devtool: "source-map",
   entry: [
+    'webpack-dev-server/client?http://localhost:6001',
+    'webpack/hot/only-dev-server',
     APP_DIR + '/main.js',
     
   ],
@@ -14,7 +16,9 @@ var config = {
     path: BUILD_DIR,
     filename: 'gimci.js'
   },
-  plugins: [],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ],
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
@@ -37,7 +41,13 @@ var config = {
         }
       }
     ]
-  }
+  },
+  devServer: {
+    historyApiFallback: {
+      index: 'index.html'
+    },
+    headers: { "Access-Control-Allow-Origin": "*" }
+  },
 };
 
 module.exports = config;
