@@ -4,6 +4,7 @@
   "description": "Korean Natural Language Processing JavaScript library",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack --progress --colors --watch --config webpack/dev.config.js",
     "build": "webpack -p --config webpack/prod.config.js"
   },
   "author": [
@@ -17,10 +18,12 @@
     }
   ],
   "license": "MIT",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
-
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "webpack": "^1.13.3"
   }
 }
