@@ -20,7 +20,7 @@ var config = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
   },
   module : {
     loaders : [
@@ -28,18 +28,7 @@ var config = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
-          presets: ['es2015']
-        }
       },
-      {
-        test: /\.js?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015']
-        }
-      }
     ]
   },
   devServer: {

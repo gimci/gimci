@@ -11,7 +11,6 @@ module.exports = {
     filename: "bundle.js"
   },
   plugins: [
-    new ExtractTextPlugin('style.css', {allChunks: true}),
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin({minimize: true}),
     new webpack.DefinePlugin({

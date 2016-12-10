@@ -7,11 +7,11 @@
     "dev": "webpack-dev-server --colors --content-base build/ --host 0.0.0.0 --port 6001 --config ./webpack/dev.config.js",
     "build": "webpack -p --config webpack/prod.config.js"
   },
-  "author": [
-    {
+  "author": {
       "name": "engine",
       "email": "enginehenryed@gmail.com"
     },
+  "contributors": [
     {
       "name": "uenieng",
       "email": "wonyeong91@gmail.com"
