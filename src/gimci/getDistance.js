@@ -1,8 +1,14 @@
 import warning from './utils/warning'
 
+
+/**
+ *
+ * @param words array
+ * @param method
+ * @returns {*}
+ */
 export default function getDistance(words, method = 'levenshtein') {
 
-  console.log(method)
   if (words.length !== 2) {
     warning('You should provide two discrete words')
   } else {
@@ -16,29 +22,32 @@ export default function getDistance(words, method = 'levenshtein') {
 }
 
 
-
+/**
+ *
+ * @param word1
+ * @param word2
+ * @returns {*}
+ */
 function getLevenshteinDistance(word1, word2) {
 
   let cost = 0
   let d = make2DArray(word1.length + 1, word2.length + 1, 0)
 
-  console.log(11, word1.length, word2.length, d[1][2])
-//
-//   // source prefixes can be transformed into empty string by
-//   // dropping all characters
+  // console.log(11, word1.length, word2.length, d[1][2])
+
+  // source prefixes can be transformed into empty string by
+  // dropping all characters
   for (let i = 1; i <= word1.length; i++) {
     d[i][0] = i
   }
 
-  console.log(1, d)
-//
-//   // target prefixes can be reached from empty source prefix
-//   // by inserting every character
+  // console.log(1, d)
+
+  // target prefixes can be reached from empty source prefix
+  // by inserting every character
   for (let j = 1; j <= word2.length; j++) {
     d[0][j] = j
   }
-
-  console.log(2, d)
 
   for (let j = 1; j <= word2.length; j++) {
     for (let i = 1; i <= word1.length; i++) {
@@ -54,12 +63,17 @@ function getLevenshteinDistance(word1, word2) {
       )
     }
   }
-  console.log(2, d[word1.length][word2.length])
-
   return d[word1.length][word2.length]
 }
 
 
+/**
+ *
+ * @param rows
+ * @param cols
+ * @param val
+ * @returns {Array}
+ */
 function make2DArray(rows, cols, val) {
 
   let arr = [];
@@ -75,10 +89,7 @@ function make2DArray(rows, cols, val) {
 
     for (let j=0; j < cols; j++) {
       arr[i][j] = val;
-      console.log(arr[i][j])
     }
   }
-  console.log(44, arr)
-
   return arr;
 }
