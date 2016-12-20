@@ -1,6 +1,17 @@
 import warning from './utils/warning'
 import romanize from './romanize'
 
+
+/**
+ *
+ *
+ *
+ * e.g. correct(['foo', 'bar' ...])
+ *
+ * ref: http://norvig.com/spell-correct.html
+ * @param trainData array
+ * @returns {{}}
+ */
 export default function correct(trainData) {
   if(!Array.isArray(trainData)){
     warning('You should provide array as a train data');
@@ -119,7 +130,7 @@ export default function correct(trainData) {
     for (var i = 0; i < arguments.length; i++) {
       var word = romanize(arguments[i]);
       // 인풋자체, 1번 수정한거, 2번수정한 결과물들중에 트레인된 데이터와 일치하는것들을 후보로 가져옴
-      var candidates = known.curry()([word],edits1([word]),edits2([word]));
+      var candidates = known.curry()([word], edits1([word]), edits2([word]));
       // 후보들중 가장큰 예상값을 가진놈이 아웃풋으로 나옴
       corrections[word] = candidates.isEmpty() ? word : max(candidates);
     }
