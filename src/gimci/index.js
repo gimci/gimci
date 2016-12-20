@@ -13,9 +13,11 @@
 import correct from './correct'
 import getDistance from './getDistance'
 import romanize from './romanize'
+import Dict from './Dict'
 
-export default {
+export {
   correct,
   getDistance,
-  romanize
+  romanize,
+  Dict,
 }
