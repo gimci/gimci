@@ -131,10 +131,43 @@ export default function correct(trainData) {
     train(romanize(trainData[i]));
   }
 
+  var deleteOnce = function(words){
+    var edits1Set = [];
+    for(var w = 0; w < words.length; w++) {
+      var word = words[w];
+      for (var i = 0; i < word.length; i++) {
+        var a = word.substr(0, i) + word.substr(i+1, word.length);
+        edits1Set.push(a);
+      }
+    }
+    return edits1Set;
+  }
+
+  var deleteTwice = function(words){
+    return deleteOnce(deleteOnce(words));
+  }
+
+  var deleteDict = function(words){
+    var dictSet = [];
+    dictSet.push(words);
+    dictSet.push(deleteOnce(words));
+    dictSet.push(deleteTwice(words));
+    return dictSet;
+  }
+
+
+
+
+  that.deleteOnce = deleteOnce;
+  that.deleteTwice = deleteTwice;
+  that.deleteDict = deleteDict.curry();
+
   that.train = train;
   that.correct = correct.curry();
 
   that.edits1 = edits1;
   that.edits2 = edits2;
   return that;
+
+
 }
