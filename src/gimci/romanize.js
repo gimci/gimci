@@ -58,7 +58,6 @@ const FINAL = [
   {ko: 'ㄴㅈ', ro: 'nj', uni: 0x3135},
   {ko: 'ㄴㅎ', ro: 'nh', uni: 0x3136},
   {ko: 'ㄷ', ro: 'd', uni: 0x3137},
-  {ko: 'ㄸ', ro: 'dd', uni: 0x3138},
   {ko: 'ㄹ', ro: 'r', uni: 0x3139},
   {ko: 'ㄹㄱ', ro: 'rg', uni: 0x313a},
   {ko: 'ㄹㅁ', ro: 'rm', uni: 0x313b},
@@ -69,13 +68,11 @@ const FINAL = [
   {ko: 'ㄹㅎ', ro: 'rh', uni: 0x3140},
   {ko: 'ㅁ', ro: 'm', uni: 0x3141},
   {ko: 'ㅂ', ro: 'b', uni: 0x3142},
-  {ko: 'ㅃ', ro: 'bb', uni: 0x3143},
   {ko: 'ㅂㅅ', ro: 'bs', uni: 0x3144},
   {ko: 'ㅅ', ro: 's', uni: 0x3145},
   {ko: 'ㅆ', ro: 'ss', uni: 0x3146},
   {ko: 'ㅇ', ro: 'ng', uni: 0x3147}, // note that 'IYng' is nasal here, thus 'ng' not '\phi'
   {ko: 'ㅈ', ro: 'j', uni: 0x3148},
-  {ko: 'ㅉ', ro: 'jj', uni: 0x3149},
   {ko: 'ㅊ', ro: 'c', uni: 0x314a},
   {ko: 'ㅋ', ro: 'k', uni: 0x314b},
   {ko: 'ㅌ', ro: 't', uni: 0x314c},
@@ -166,6 +163,7 @@ export default function romanize(text) {
       l3 = l3 % (21 * 28);
       l2 = l3 / 28; // median
       l3 = l3 % 28; // final
+
 
       initial = INITIAL[parseInt(l1)].ro
       if(initial !== '') {

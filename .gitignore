@@ -164,4 +164,4 @@ fabric.properties
 
 # And more
 .idea/
-.build/
+build/

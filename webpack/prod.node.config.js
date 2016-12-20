@@ -8,11 +8,11 @@ var APP_DIR = path.resolve(__dirname, '../src');
 var config = {
   devtool: "source-map",
   entry: [
-    'webpack-dev-server/client?http://localhost:6001',
-    'webpack/hot/only-dev-server',
     APP_DIR + '/main.js',
-    
+
   ],
+  target: 'node',
+  externals: [nodeExternals()],
   output: {
     path: BUILD_DIR,
     filename: 'gimci.js'
@@ -31,12 +31,6 @@ var config = {
         loader: 'babel-loader',
       },
     ]
-  },
-  devServer: {
-    historyApiFallback: {
-      index: 'index.html'
-    },
-    headers: { "Access-Control-Allow-Origin": "*" }
   },
 };
 
