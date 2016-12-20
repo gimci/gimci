@@ -6,3 +6,5 @@ console.log('start gimci...', gimci)
 if (typeof window !== 'undefined') {
   window.gimci = gimci
 }
+
+export default gimci
