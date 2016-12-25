@@ -16,10 +16,13 @@ class Dict {
 
   insertIntoDict(elem, base, dict) {
     if (!dict[elem]) {
-      // console.log(33, dict[delete1Elem])
       dict[elem] = { refer: [base] }
     } else {
-      // console.log(44, dict[delete1Elem])
+      for (let i = 0; i < dict[elem]['refer'].length; i++) {
+        if (dict[elem]['refer'][i] === base) {
+          return dict
+        }
+      }
       dict[elem]['refer'].push(base)
     }
     return dict
