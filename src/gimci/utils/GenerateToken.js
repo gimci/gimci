@@ -17,7 +17,14 @@ const deleteOnce = (str) => {
 /**
  *
  */
-const deleteTwice = (words) => ( deleteOnce(deleteOnce(words)) )
+const deleteTwice = (str) => {
+  let ret = []
+  let tokenDeletedOnce = deleteOnce(str)
+    for(let i = 0; i < tokenDeletedOnce.length; i++) {
+      ret = ret.concat(deleteOnce(tokenDeletedOnce[i]))
+    }
+  return ret;
+}
 
 /**
  *
