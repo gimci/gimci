@@ -1,9 +1,14 @@
-import warning from './utils/warning'
+/* Externals */
 import romanize from './romanize'
 import fs from 'fs'
 import path from 'path'
 
+/* Internals */
+import warning from './utils/warning'
+import GenerateToken from './utils/generateToken'
 
+
+/**/
 class Dict {
 
   constructor() {
@@ -34,6 +39,10 @@ class Dict {
 
   resolvePath(srcPath) {
     return path.join(srcPath, '..')
+  }
+
+  temp() {
+    return GenerateToken
   }
 }
 
