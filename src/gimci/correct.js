@@ -87,14 +87,14 @@ export default function correct(trainData) {
     return true;
   };
 
-  Function.prototype.curry = function () {
-    var slice = Array.prototype.slice,
-      args = slice.apply(arguments),
-      that = this;
-    return function () {
-      return that.apply(null, args.concat(slice.apply(arguments)));
-    };
-  };
+  // Function.prototype.curry = function () {
+  //   var slice = Array.prototype.slice,
+  //     args = slice.apply(arguments),
+  //     that = this;
+  //   return function () {
+  //     return that.apply(null, args.concat(slice.apply(arguments)));
+  //   };
+  // };
 
   // 입력값값이 트레인된값에존재하면 해당 정보 리턴
   var known = function () {
@@ -171,13 +171,13 @@ export default function correct(trainData) {
 
   that.deleteOnce = deleteOnce;
   that.deleteTwice = deleteTwice;
-  that.deleteDict = deleteDict.curry();
+  that.deleteDict = deleteDict;
 
-  that.train = train;
-  that.correct = correct.curry();
-
-  that.edits1 = edits1;
-  that.edits2 = edits2;
+  // that.train = train;
+  // that.correct = correct.curry();
+  //
+  // that.edits1 = edits1;
+  // that.edits2 = edits2;
   return that;
 
 
