@@ -13,6 +13,7 @@
 import correct from './correct'
 import getDistance from './getDistance'
 import romanize from './romanize'
+import romanizeFile from './romanizeFile'
 import Dict from './Dict'
 
 export {
@@ -20,4 +21,5 @@ export {
   getDistance,
   romanize,
   Dict,
+  romanizeFile
 }
