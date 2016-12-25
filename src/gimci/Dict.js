@@ -14,6 +14,17 @@ class Dict {
 
   }
 
+  insertIntoDict(elem, base, dict) {
+    if (!dict[elem]) {
+      // console.log(33, dict[delete1Elem])
+      dict[elem] = { refer: [base] }
+    } else {
+      // console.log(44, dict[delete1Elem])
+      dict[elem]['refer'].push(base)
+    }
+    return dict
+  }
+
   makeDict() {
     let dict = {}
     const _data = File.read()
@@ -25,29 +36,17 @@ class Dict {
     data.map(elem => {
       tokens = GenerateToken.byDeletion(elem)
       base = tokens['base']
-      dict[base] = { refer: [ base ] }
-      // console.log(1, base, tokens['delete1'])
+      dict = this.insertIntoDict(base, base, dict)
 
       // Delete single
       tokens['delete1'].map(delete1Elem => {
-        // console.log(3, delete1Elem)
-        // If it does not exists,
-        if (!dict[delete1Elem]) {
-          // console.log(33, dict[delete1Elem])
-          dict[delete1Elem] = { refer: [base] }
-        } else {
-          // console.log(44, dict[delete1Elem])
-          dict[delete1Elem]['refer'].push(base)
-          // if(!dict[delete1Elem]['refer'])
-          // {
-          //   dict[delete1Elem] = { refer: [base] }
-          // } else {
-          //   dict[delete1Elem]['refer'].push(base)
-          // }
-        }
+        dict = this.insertIntoDict(delete1Elem, base, dict)
       })
 
       // Delete twice
+      tokens['delete2'].map(delete2Elem => {
+        dict = this.insertIntoDict(delete2Elem, base, dict)
+      })
 
     })
     console.log(3, dict)
