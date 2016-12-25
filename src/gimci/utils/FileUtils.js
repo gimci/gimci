@@ -5,16 +5,8 @@ import path from 'path'
 let _path = '../../data'
 
 const read = (srcPath = '../../data/data.txt') => {
-  console.log(1, srcPath)
   const path = resolvePath(srcPath)
-  fs.readFile(srcPath, 'utf8', function (err, data) {
-      if (err) {
-        throw err;
-      }
-      console.log('file read', data)
-      return data;
-    }
-  );
+  return fs.readFileSync(srcPath, 'utf8')
 }
 
 const write = (data) => {
