@@ -30,7 +30,6 @@ const deleteTwice = (str) => {
  *
  */
 const byDeletion = (str, num) => {
-  console.log('by deletion')
   let tokenSet = {};
   tokenSet['base'] = str;
   tokenSet['delete1'] = deleteOnce(str)

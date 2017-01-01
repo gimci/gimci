@@ -10,14 +10,14 @@
  *
  */
 
-import correct from './correct'
-import getDistance from './getDistance'
+import getDistanceOfTwoWords from './getDistance'
 import romanize from './romanize'
+import romanizeFile from './romanizeFile'
 import Dict from './Dict'
 
 export {
-  correct,
-  getDistance,
   romanize,
-  Dict,
+  romanizeFile,
+  getDistanceOfTwoWords,
+  Dict
 }
