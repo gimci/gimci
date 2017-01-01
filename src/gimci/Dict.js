@@ -21,7 +21,11 @@ const insertIntoDict = (elem, base, dict) => {
   return dict
 }
 
-const makeDict = () => {
+
+const _srcPath = ''
+const _destPath = ''
+
+const buildNew = (srcPath, destPath) => {
   let dict = {}
   const _data = File.read('../../data/elementaryKorean.romanized.txt')
   const data = _data.match(/[^\r\n]+/g);
@@ -50,5 +54,5 @@ const makeDict = () => {
 
 
 export default {
-  makeDict
+  buildNew
 }
