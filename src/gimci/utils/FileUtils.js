@@ -2,15 +2,19 @@
 import fs from 'fs'
 import path from 'path'
 
-let _path = '../../data'
+let _srcPath = '../../data/elementaryKorean.dict.json'
 
-const read = (srcPath = '../../data/data.txt') => {
-  _path = resolvePath(srcPath)
-  return fs.readFileSync(srcPath, 'utf8')
+/**
+ *
+ */
+const read = (srcPath = _srcPath) => {
+  return JSON.parse(fs.readFileSync(srcPath, 'utf8'))
 }
 
+/**
+ *
+ */
 const write = (destPath, data) => {
-  // const destPath = `${_path}/parsed.json`
   fs.writeFile(destPath, JSON.stringify(data), function(err) {
     if(err) {
       return console.log(err);
@@ -19,6 +23,9 @@ const write = (destPath, data) => {
   });
 }
 
+/**
+ *
+ */
 const resolvePath = (srcPath) => {
   console.log('path resolved', srcPath)
   path.join(srcPath, '..')

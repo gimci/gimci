@@ -10,14 +10,18 @@
  *
  */
 
-import getDistanceOfTwoWords from './getDistance'
+import getDistanceOfTwoWords from './getDistanceOfTwoWords'
 import romanize from './romanize'
 import romanizeFile from './romanizeFile'
 import Dict from './Dict'
+import FileUtils from './utils/FileUtils'
+import search from './search'
 
 export {
+  FileUtils,
   romanize,
   romanizeFile,
   getDistanceOfTwoWords,
-  Dict
+  Dict,
+  search
 }
