@@ -10,7 +10,7 @@
  *
  */
 
-import getDistanceOfTwoWords from './getDistance'
+import getDistanceOfTwoWords from './getDistanceOfTwoWords'
 import romanize from './romanize'
 import romanizeFile from './romanizeFile'
 import Dict from './Dict'
