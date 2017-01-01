@@ -14,8 +14,10 @@ import getDistanceOfTwoWords from './getDistanceOfTwoWords'
 import romanize from './romanize'
 import romanizeFile from './romanizeFile'
 import Dict from './Dict'
+import FileUtils from './utils/FileUtils'
 
 export {
+  FileUtils,
   romanize,
   romanizeFile,
   getDistanceOfTwoWords,
