@@ -9,7 +9,6 @@ var config = {
   devtool: "source-map",
   entry: [
     APP_DIR + '/main.js',
-
   ],
   target: 'node',
   externals: [nodeExternals()],
@@ -19,6 +18,9 @@ var config = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': 'node'
+    })
   ],
   resolve: {
     extensions: ['', '.js', '.jsx'],
