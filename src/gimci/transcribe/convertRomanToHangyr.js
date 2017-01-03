@@ -14,7 +14,8 @@ export default function convertRomanToHangyr(text) {
       // check last word is consonant
       if (i !== 0 && !isVowel(seg[i - 1].charAt(seg[i - 1].length - 1))) {
         // check Uppercase consonant
-        if (seg[i - 1].charAt(seg[i - 1].length - 2) === seg[i - 1].charAt(seg[i - 1].length - 2).toUpperCase()) {
+        if (!isVowel(seg[i - 1].charAt(seg[i - 1].length - 2))
+            && seg[i - 1].charAt(seg[i - 1].length - 2) === seg[i - 1].charAt(seg[i - 1].length - 2).toUpperCase()) {
           // slice end of two letter and concat
           seg[i] = seg[i - 1].slice(seg[i - 1].length - 2, seg[i - 1].length).concat(seg[i])
           seg[i - 1] = seg[i - 1].slice(0, seg[i - 1].length - 2)
