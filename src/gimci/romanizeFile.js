@@ -1,9 +1,9 @@
-/**/
+/* Externals */
 import path from 'path'
 import fs from 'fs'
 import readline from 'readline'
 
-/**/
+/* Internals*/
 import romanize from './romanize'
 
 

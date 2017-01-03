@@ -2,23 +2,21 @@
 import GenerateToken from './utils/generateToken'
 import File from './utils/FileUtils'
 
+/* */
 const _dictPath = '../../data/elementaryKorean.dict.json'
-
 
 
 /**
  *
  */
 const search = (query, dictPath = _dictPath) => {
+  let dict = JSON.parse(File.read(dictPath))
 
-  const dict = File.read(dictPath)
   const tokensOfQuery = GenerateToken.byDeletion(query)
   const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])
   let res = {}
   res['tier2'] = []
   res['tier3'] = []
-
-  console.log(dict[query]['refer'] instanceof Array)
 
 
   // case1
@@ -75,8 +73,5 @@ const search = (query, dictPath = _dictPath) => {
 
   return res
 }
-
-
-
 
 export default search

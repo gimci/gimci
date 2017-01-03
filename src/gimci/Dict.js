@@ -1,10 +1,9 @@
-/* Externals */
-import romanize from './romanize'
 
 /* Internals */
 import warning from './utils/warning'
 import GenerateToken from './utils/generateToken'
 import File from './utils/FileUtils'
+import romanize from './romanize'
 
 /**/
 const insertIntoDict = (elem, base, dict) => {
@@ -25,6 +24,9 @@ const insertIntoDict = (elem, base, dict) => {
 const _srcPath = ''
 const _destPath = ''
 
+/**
+ *
+ */
 const buildNew = (srcPath, destPath) => {
   let dict = {}
   const _data = File.read('../../data/elementaryKorean.romanized.txt')

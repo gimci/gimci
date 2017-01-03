@@ -8,7 +8,7 @@ let _srcPath = '../../data/elementaryKorean.dict.json'
  *
  */
 const read = (srcPath = _srcPath) => {
-  return JSON.parse(fs.readFileSync(srcPath, 'utf8'))
+  return (fs.readFileSync(srcPath, 'utf8'))
 }
 
 /**
