@@ -105,9 +105,13 @@ const segmentIntoChars = (segmentedByVowel) => {
 export default function convertRomanToHangyr(str) {
   const segmentedByVowel = segmentByVowel(str)
   const segmentedIntoChars = segmentIntoChars(segmentedByVowel)
+  let convertedHangul = ''
 
   // looping through segmentedIntoChars
   // concatenate each of the result of compose(char)
+  for(let i = 0; i < segmentedIntoChars.length; i++) {
+    convertedHangul = convertedHangul.concat(compose(segmentedIntoChars[i]))
+  }
 
-  return null
+  return convertedHangul
 }
