@@ -7,13 +7,16 @@ import convertRomanToHangyr from './transcribe/convertRomanToHangyr'
 /* Default paths */
 const _dictPath = '../../assets/elementaryKorean.dict.json'
 
-
 /**
  *
  */
+
 const search = (_query, dictPath = _dictPath) => {
-  let dict = JSON.parse(File.read(dictPath))
   const query = convertHangyrToRoman(_query)
+  let dict =
+    process.env.NODE_ENV === 'web'
+    ? require(`../../assets/elementaryKorean.dict.json`)
+    : JSON.parse(File.read(dictPath))
 
   const tokensOfQuery = GenerateToken.byDeletion(query)
   const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])
@@ -21,7 +24,6 @@ const search = (_query, dictPath = _dictPath) => {
   res['tier1'] = []
   res['tier2'] = []
   res['tier3'] = []
-
 
   // case1
   if (

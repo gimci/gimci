@@ -11,7 +11,7 @@ var config = {
     'webpack-dev-server/client?http://localhost:6001',
     'webpack/hot/only-dev-server',
     APP_DIR + '/main.js',
-    
+
   ],
   output: {
     path: BUILD_DIR,
@@ -19,7 +19,16 @@ var config = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"web"'
+    })
   ],
+  node: {
+    net: 'empty',
+    dns: 'empty',
+    fs: 'empty',
+    readline: 'empty'
+  },
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
@@ -29,6 +38,10 @@ var config = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       },
     ]
   },
