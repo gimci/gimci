@@ -11,17 +11,17 @@
  */
 
 import getDistanceOfTwoWords from './getDistanceOfTwoWords'
-import romanize from './romanize'
-import romanizeFile from './romanizeFile'
-import Dict from './Dict'
+// import romanize from './romanize'
+// import romanizeFile from './romanizeFile'
+import dict from './dict'
 import FileUtils from './utils/FileUtils'
 import search from './search'
+import { convertHangyrToRoman, convertRomanToHangyr } from './transcribe'
 
 export {
   FileUtils,
-  romanize,
-  romanizeFile,
   getDistanceOfTwoWords,
-  Dict,
-  search
+  dict,
+  search,
+  convertHangyrToRoman
 }

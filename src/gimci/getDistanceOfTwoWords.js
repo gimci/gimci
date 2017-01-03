@@ -1,5 +1,6 @@
+/* Internals */
 import warning from './utils/warning'
-import romanize from './romanize'
+import { convertHangyrToRoman } from './transcribe'
 
 
 /**
@@ -13,7 +14,7 @@ export default function getDistanceOfTwoWords(words, method = 'levenshtein') {
     warning('You should provide two discrete words')
   } else {
     if (method === 'levenshtein') {
-      return getLevenshteinDistance(romanize(words[0]), romanize(words[1]))
+      return getLevenshteinDistance(convertHangyrToRoman(words[0]), convertHangyrToRoman(words[1]))
     } else {
       return 0
     }

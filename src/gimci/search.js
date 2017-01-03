@@ -2,8 +2,8 @@
 import GenerateToken from './utils/generateToken'
 import File from './utils/FileUtils'
 
-/* */
-const _dictPath = '../../data/elementaryKorean.dict.json'
+/* Default paths */
+const _dictPath = '../../assets/elementaryKorean.dict.json'
 
 
 /**
