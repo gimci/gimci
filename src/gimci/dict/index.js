@@ -51,10 +51,9 @@ const buildNew = (srcPath, destPath) => {
       dict = insertIntoDict(delete2Elem, base, dict)
     })
   })
-  console.log('Finished building new dictionary', dict)
+  console.log('Finished building new dictionary')
   File.write('../../assets/elementaryKorean.dict.json', dict)
 }
-
 
 export default {
   buildNew,
