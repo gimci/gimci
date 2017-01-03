@@ -162,4 +162,7 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
+# And more
 .idea/
+build/
+_backup/
