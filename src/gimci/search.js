@@ -1,6 +1,7 @@
 /* Internals */
 import GenerateToken from './utils/generateToken'
 import File from './utils/FileUtils'
+import romanize from './transcribe/convertHangyrToRoman'
 
 /* Default paths */
 const _dictPath = '../../assets/elementaryKorean.dict.json'
@@ -9,12 +10,14 @@ const _dictPath = '../../assets/elementaryKorean.dict.json'
 /**
  *
  */
-const search = (query, dictPath = _dictPath) => {
+const search = (_query, dictPath = _dictPath) => {
   let dict = JSON.parse(File.read(dictPath))
+  const query = romanize(_query)
 
   const tokensOfQuery = GenerateToken.byDeletion(query)
   const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])
   let res = {}
+  res['tier1'] = []
   res['tier2'] = []
   res['tier3'] = []
 
@@ -35,7 +38,7 @@ const search = (query, dictPath = _dictPath) => {
     && !dict[query]['refer'].includes(query)
   ) {
     dict[query]['refer'].map(refer => {
-      if(res['tier2'].indexOf(refer) === -1) {
+      if(res['tier1'].indexOf(refer) === -1 && res['tier2'].indexOf(refer) === -1) {
         res['tier2'].push(refer)
       }
     })
@@ -49,7 +52,7 @@ const search = (query, dictPath = _dictPath) => {
       dict.hasOwnProperty(candidate)
       && dict[candidate]['refer'].includes(candidate)
     ) {
-      if(res['tier2'].indexOf(candidate) === -1) {
+      if(res['tier1'].indexOf(candidate) === -1 && res['tier2'].indexOf(candidate) === -1) {
         res['tier2'].push(candidate)
       }
     }
@@ -64,7 +67,7 @@ const search = (query, dictPath = _dictPath) => {
       && !dict[candidate]['refer'].includes(candidate)
     ) {
       dict[candidate]['refer'].map(refer => {
-        if(res['tier3'].indexOf(refer) === -1) {
+        if(res['tier2'].indexOf(refer) === -1 && res['tier3'].indexOf(refer) === -1) {
           res['tier3'].push(refer)
         }
       })
