@@ -23,5 +23,6 @@ export {
   getDistanceOfTwoWords,
   dict,
   search,
-  convertHangyrToRoman
+  convertHangyrToRoman,
+  convertRomanToHangyr
 }
