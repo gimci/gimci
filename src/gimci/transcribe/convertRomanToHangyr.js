@@ -1,5 +1,5 @@
 /**/
-import { INITIAL, MEDIAL, FINAL, JAMO } from './bagsynghienRule'
+import {INITIAL, MEDIAL, FINAL, JAMO} from './bagsynghienRule'
 
 /**
  *
@@ -7,56 +7,70 @@ import { INITIAL, MEDIAL, FINAL, JAMO } from './bagsynghienRule'
  * @returns {string}
  */
 export default function convertRomanToHangyr(text) {
-  //
-  // let chars = []
-  // let l1, l2, l3, initial, medial, final
-  // let ret = ''
-  //
-  // for (let i = 0; i < text.length; i++) {
-  //   l1 = 0
-  //   l2 = 0
-  //   l3 = 0
-  //   initial = ''
-  //   medial = ''
-  //   final = ''
-  //
-  //   chars[i] = text.charCodeAt(i)
-  //
-  //   if (chars[i] >= 0xAC00 && chars[i] <= 0xD7A3) {
-  //     l1 = 0, l2 = 0, l3 = 0;
-  //     l3 = chars[i] - 0xAC00;
-  //     l1 = l3 / (21 * 28); // initial
-  //     l3 = l3 % (21 * 28);
-  //     l2 = l3 / 28; // median
-  //     l3 = l3 % 28; // final
-  //
-  //
-  //     initial = INITIAL[parseInt(l1)].ro
-  //     if(initial !== '') {
-  //       ret = ret.concat(initial)
-  //     }
-  //
-  //     medial = MEDIAL[parseInt(l2)].ro
-  //     if(initial === '') { // make the first char uppercase when initial is empty,
-  //       medial = medial.charAt(0).toUpperCase() + medial.slice(1);
-  //     }
-  //     ret = ret.concat(medial)
-  //
-  //     if(l3 != 0x0000) { // if final is not empty
-  //       final = FINAL[parseInt(l3)].ro
-  //       ret = ret.concat(final)
-  //     }
-  //   }
-  //
-  //   // When a letter appears it its own form without being combined into a character,
-  //   else if (chars[i] >= 0x3131 && chars[i] <= 0x3163) {
-  //     ret = ret.concat(JAMO[chars[i].toString(16)].ro)
-  //   }
-  //
-  //   // if the char is not hangyr
-  //   else {
-  //     ret = ret.concat(String.fromCharCode(chars[i]));
-  //   }
-  // }
-  // return ret;
+  let seg = segment(text)
+  let n = seg.length
+  for (let i = n - 1; i > 0; i--) {
+    if (seg[i].charAt(0) === seg[i].charAt(0).toLowerCase()) {
+      // check last word is consonant
+      if (i !== 0 && !isVowel(seg[i - 1].charAt(seg[i - 1].length - 1))) {
+        // check Uppercase consonant
+        if (seg[i - 1].charAt(seg[i - 1].length - 2) === seg[i - 1].charAt(seg[i - 1].length - 2).toUpperCase()) {
+          // slice end of two letter and concat
+          seg[i] = seg[i - 1].slice(seg[i - 1].length - 2, seg[i - 1].length).concat(seg[i])
+          seg[i - 1] = seg[i - 1].slice(0, seg[i - 1].length - 2)
+        } else {
+          // slice end of one letter and concat
+          seg[i] = seg[i - 1].slice(seg[i - 1].length - 1, seg[i - 1].length).concat(seg[i])
+          seg[i - 1] = seg[i - 1].slice(0, seg[i - 1].length - 1)
+        }
+      } else if (i !== 0 && isVowel(seg[i - 1].charAt(seg[i - 1].length - 1))) {
+        // if last word is vowel
+        // concat lastArray to front and delete lastArray
+        seg[i - 1] = seg[i - 1].concat(seg[i])
+        seg.splice(i, 1)
+      }
+    } else {
+      // if Uppercase Of Vowel
+      // nothing
+    }
+  }
+
+  // handle when firstArray is ''
+  if(seg[0] === '') {
+    seg.splice(0, 1)
+  }
+
+
+  return seg
 }
+
+
+/*
+ * slice word start with vowel
+ */
+const segment = (text) => {
+  let slicePosition = 0
+  let ret = []
+  let char = ''
+
+  for (let i = 1; i < text.length; i++) {
+    char = text.charAt(i)
+    // if char is vowel
+    if (isVowel(char)) {
+      ret.push(text.slice(slicePosition, i))
+      slicePosition = i;
+    }
+  }
+  ret.push(text.slice(slicePosition))
+
+  return ret;
+}
+
+
+/*
+ * check vowel
+ */
+const isVowel = (vowel) => {
+  return ['a', 'e', 'i', 'o', 'u'].indexOf(vowel.toLowerCase()) !== -1
+}
+
