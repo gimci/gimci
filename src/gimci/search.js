@@ -1,7 +1,8 @@
 /* Internals */
 import GenerateToken from './utils/generateToken'
 import File from './utils/FileUtils'
-import romanize from './transcribe/convertHangyrToRoman'
+import convertHangyrToRoman from './transcribe/convertHangyrToRoman'
+import convertRomanToHangyr from './transcribe/convertRomanToHangyr'
 
 /* Default paths */
 const _dictPath = '../../assets/elementaryKorean.dict.json'
@@ -12,7 +13,7 @@ const _dictPath = '../../assets/elementaryKorean.dict.json'
  */
 const search = (_query, dictPath = _dictPath) => {
   let dict = JSON.parse(File.read(dictPath))
-  const query = romanize(_query)
+  const query = convertHangyrToRoman(_query)
 
   const tokensOfQuery = GenerateToken.byDeletion(query)
   const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])
@@ -27,7 +28,7 @@ const search = (_query, dictPath = _dictPath) => {
     dict.hasOwnProperty(query)
     && dict[query]['refer'].includes(query)
   ) {
-    res['tier1'] = query
+    res['tier1'].push(query)
   }
 
   // case2
@@ -67,14 +68,34 @@ const search = (_query, dictPath = _dictPath) => {
       && !dict[candidate]['refer'].includes(candidate)
     ) {
       dict[candidate]['refer'].map(refer => {
-        if(res['tier2'].indexOf(refer) === -1 && res['tier3'].indexOf(refer) === -1) {
+        if(res['tier1'].indexOf(refer) === -1 && res['tier2'].indexOf(refer) === -1 && res['tier3'].indexOf(refer) === -1) {
           res['tier3'].push(refer)
         }
       })
     }
   })
 
+  res = convertSearchRetToHangul(res)
   return res
+}
+
+/*
+ *
+ */
+const convertSearchRetToHangul = (tierSet) => {
+  for(let i = 0; i < tierSet['tier1'].length; i++) {
+    if(tierSet['tier1'][i] !== '') {
+      tierSet['tier1'][i] = convertRomanToHangyr(tierSet['tier1'][i])
+    }
+  }
+  for(let i = 0; i < tierSet['tier2'].length; i++) {
+    tierSet['tier2'][i] = convertRomanToHangyr(tierSet['tier2'][i])
+  }
+  for(let i = 0; i < tierSet['tier3'].length; i++) {
+    console.log([1], tierSet['tier3'][i])
+    // tierSet['tier3'][i] = convertRomanToHangyr(tierSet['tier3'][i])
+  }
+  return tierSet
 }
 
 export default search

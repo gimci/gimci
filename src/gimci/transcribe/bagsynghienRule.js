@@ -14,7 +14,7 @@ const INITIAL = [
   {ko: 'ㅂ', ro: 'b', uni: 0x3142},
   {ko: 'ㅃ', ro: 'Bb', uni: 0x3143},
   {ko: 'ㅅ', ro: 's', uni: 0x3145},
-  {ko: 'ㅆ', ro: 'ss', uni: 0x3146},
+  {ko: 'ㅆ', ro: 'Ss', uni: 0x3146},
   {ko: 'ㅇ', ro: '', uni: 0x3147}, // 11th
   {ko: 'ㅈ', ro: 'j', uni: 0x3148},
   {ko: 'ㅉ', ro: 'Jj', uni: 0x3149},
