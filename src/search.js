@@ -12,10 +12,14 @@ const _dictPath = '../assets/elementaryKorean.dict.json'
  */
 const search = (_query, dictPath = _dictPath) => {
   const query = convertHangyrToRoman(_query)
-  let dict =
-    process.env.NODE_ENV === 'web'
-    ? require(`../assets/elementaryKorean.dict.json`)
-    : JSON.parse(File.read(dictPath))
+
+  // temporary off
+  // let dict =
+  //   process.env.NODE_ENV === 'web'
+  //   ? require(`../assets/elementaryKorean.dict.json`)
+  //   : JSON.parse(File.read(dictPath))
+
+  let dict = require('../assets/elementaryKorean.dict.json')
 
   const tokensOfQuery = GenerateToken.byDeletion(query)
   const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])

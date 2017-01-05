@@ -1,14 +1,15 @@
 /**/
 let _srcPath = '../../assets/elementaryKorean.dict.json'
+let fs = false
 
 
 /* Sanity check */
 try {
-  let fs = require('fs');
-  console.log("node js is in host environment");
+  fs = require('fs')
+  console.log("node js is in host environment")
 } catch (err){
+  fs = false
   console.log("Cannot load node modules")
-  let fs = false
 }
 
 
@@ -16,14 +17,14 @@ try {
  *
  */
 const read = (srcPath = _srcPath) => {
-  return fs ? (fs.readFileSync(srcPath, 'utf8')) : null
+  return fs.readFileSync ? (fs.readFileSync(srcPath, 'utf8')) : null
 }
 
 /**
  *
  */
 const write = (destPath, data) => {
-  if (fs) {
+  if (fs.writeFile) {
     fs.writeFile(destPath, JSON.stringify(data), function(err) {
       if(err) {
         return console.log(err);
@@ -39,7 +40,7 @@ const write = (destPath, data) => {
  *
  */
 const resolvePath = (srcPath) => {
-  if (fs) {
+  if (path) {
     console.log('path resolved', srcPath)
     let path = require('path')
     path.join(srcPath, '..')
