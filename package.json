@@ -9,11 +9,11 @@
     "build:node": "babel src/ -d build/",
     "clean": "rm -rf ./build/gimci/*"
   },
-  "author": {
+  "authors": [
+    {
     "name": "engine",
     "email": "enginehenryed@gmail.com"
-  },
-  "contributors": [
+    },
     {
       "name": "uenieng",
       "email": "wonyeong91@gmail.com"
