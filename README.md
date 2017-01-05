@@ -3,10 +3,6 @@
 *JS Natural Language Processing Module for Korean (한글 자연어처리 모듈)*
 ==[Gimci](https://gimci.github.io/)== is Processing Korean with the character-based metric costs not only the amount of calculation but it also reaps the accuracy off. Meet the letter-based processing with the newly devised Korean-Roman rule. Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
 
-목차
-
-[TOC]
-
 ## Motivation
 >낱자 단위 처리 및 로마자 전사법 개정을 통한 한글 자연어 처리 개선 연구는 2016 년 현재 사용되고 있는 한글 자연어 처리 방식과 그 알고리즘을 개선하기 위해 기획되었다. 자연어처리 (Natural Language Processing, NLP) 는 정보통신기기가 널리 보급되고 Data 가 기하급수적으로 생성되길 거듭하는 지금, 컴퓨터과학의 가장 주목 받는 영역 중 하나이다. 한글로 된 Data 의 처리 성능을 개선하는 것은 이러한 대량의 Data 를 체계화하고 가공하는 것에 도움이 되는 것은 물론, 인간과 기계의 소통을 돕는 등 다양한 분야에서 효용을 만들 수 있다. 현재 사용되는 기술 혹은 지금의 패러다임에서 인지한 주요한 네 가지 문제는 다음과 같다
 
