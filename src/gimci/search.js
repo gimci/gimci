@@ -94,8 +94,7 @@ const convertSearchRetToHangul = (tierSet) => {
     tierSet['tier2'][i] = convertRomanToHangyr(tierSet['tier2'][i])
   }
   for(let i = 0; i < tierSet['tier3'].length; i++) {
-    console.log([1], tierSet['tier3'][i])
-    // tierSet['tier3'][i] = convertRomanToHangyr(tierSet['tier3'][i])
+    tierSet['tier3'][i] = convertRomanToHangyr(tierSet['tier3'][i])
   }
   return tierSet
 }

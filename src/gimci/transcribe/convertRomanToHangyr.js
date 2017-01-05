@@ -59,12 +59,11 @@ const segmentByVowel = (str) => {
  * check vowel
  */
 const vowel = (c) => {
-  return ['a', 'e', 'i', 'o', 'u'].indexOf(c.toLowerCase()) !== -1
+  return ['a', 'e', 'i', 'o', 'u', 'y'].indexOf(c.toLowerCase()) !== -1
 }
 
 
 const segmentIntoChars = (segmentedByVowel) => {
-  // console.log(segmentedByVowel)
   let segs = segmentedByVowel
   const numSegs = segs.length
   for (let i = numSegs - 1; i > 0; i--) {
