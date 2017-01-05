@@ -1,3 +1,4 @@
+# 현재 작업중입니다
 #  Gimci  ㄱㅣㅁㅊㅣ
 *JS Natural Language Processing Module for Korean (한글 자연어처리 모듈)*
 [Gimci](https://gimci.github.io/) is Processing Korean with the character-based metric costs not only the amount of calculation but it also reaps the accuracy off. Meet the letter-based processing with the newly devised Korean-Roman rule. Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
