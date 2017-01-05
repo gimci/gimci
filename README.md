@@ -1,7 +1,7 @@
 # 현재 작업중입니다
 #  Gimci  ㄱㅣㅁㅊㅣ
 *JS Natural Language Processing Module for Korean (한글 자연어처리 모듈)*
-==[Gimci](https://gimci.github.io/)== is Processing Korean with the character-based metric costs not only the amount of calculation but it also reaps the accuracy off. Meet the letter-based processing with the newly devised Korean-Roman rule. Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
+[Gimci](https://gimci.github.io/) is Processing Korean with the character-based metric costs not only the amount of calculation but it also reaps the accuracy off. Meet the letter-based processing with the newly devised Korean-Roman rule. Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
 
 ## Motivation
 >낱자 단위 처리 및 로마자 전사법 개정을 통한 한글 자연어 처리 개선 연구는 2016 년 현재 사용되고 있는 한글 자연어 처리 방식과 그 알고리즘을 개선하기 위해 기획되었다. 자연어처리 (Natural Language Processing, NLP) 는 정보통신기기가 널리 보급되고 Data 가 기하급수적으로 생성되길 거듭하는 지금, 컴퓨터과학의 가장 주목 받는 영역 중 하나이다. 한글로 된 Data 의 처리 성능을 개선하는 것은 이러한 대량의 Data 를 체계화하고 가공하는 것에 도움이 되는 것은 물론, 인간과 기계의 소통을 돕는 등 다양한 분야에서 효용을 만들 수 있다. 현재 사용되는 기술 혹은 지금의 패러다임에서 인지한 주요한 네 가지 문제는 다음과 같다
@@ -89,7 +89,7 @@ gaGgaUejida
 romanized된 txt파일의 정보를 json 형태의 데이터로 생성한다.
 > (Romanize된 데이터를 가지고 하기때문에 한글로된 파일은 convertFileHangyrToRoman을 통해 로마자로 된 파일로 우선 변형하여야 한다.)
 
-json의 정보는 elementaryKorean.romanized.txt의 words정보를 가지고 최대 2번 오직 delete연산을 통해 변화가능한 모든 token을 json파일 형태로 저장한다. delete, insert, transpose, replace 를 최대 2번 수행하는  [Peter Norvig](http://norvig.com/spell-correct.html)알고리즘과는 다른 방식을 가진다. 이 json파일은은 key(base) 와 elem으로 구성되고 ==key는 모든 변형가능한 데이터(GenerateToken을 통해 생성된 모든token)이고 elem은 refer정보 즉, delete로 변형 되기 전의 word를(elementaryKorean.romanized.txt의 데이터) 가진다.==
+json의 정보는 elementaryKorean.romanized.txt의 words정보를 가지고 최대 2번 오직 delete연산을 통해 변화가능한 모든 token을 json파일 형태로 저장한다. delete, insert, transpose, replace 를 최대 2번 수행하는  [Peter Norvig](http://norvig.com/spell-correct.html)알고리즘과는 다른 방식을 가진다. 이 json파일은은 key(base) 와 elem으로 구성되고 key는 모든 변형가능한 데이터(GenerateToken을 통해 생성된 모든token)이고 elem은 refer정보 즉, delete로 변형 되기 전의 word를(elementaryKorean.romanized.txt의 데이터) 가진다.
 
 ```
 **** elementaryKorean.romanized.txt ****
