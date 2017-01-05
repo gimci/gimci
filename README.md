@@ -60,7 +60,6 @@ convertHangyrToRoman('Annieng') -> '안녕'
 각 변화가 일어나는 경우에 대해  weight를 다르게 주면 좀더 효율적인 거리 측정이 가능하다.
 ```
 getDistanceOfTwoWord(['안녕'], ['안넝']) ->  1
-
 ```
 
 * [레빈슈타인 디스턴스](http://hsp1116.tistory.com/41)
