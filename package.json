@@ -1,6 +1,6 @@
 {
   "name": "gimci",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Korean Natural Language Processing JavaScript library",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,8 @@
   },
   "authors": [
     {
-    "name": "engine",
-    "email": "enginehenryed@gmail.com"
+      "name": "engine",
+      "email": "enginehenryed@gmail.com"
     },
     {
       "name": "uenieng",
