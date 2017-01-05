@@ -32,7 +32,7 @@ convertRomanToHangyr('안녕') -> 'Annieng'
 ```
  * [후쿠이 레이 전사법](http://www.tufs.ac.jp/ts/personal/choes/korean/middle/Sfukui.html)
  * 박승현 전사법
- 
+
 후쿠이 레이 전사법과 비교되는 특징
 
 1. 쌍소리의 첫글자를 대문자로 표시 'ㄲ', 'ㄸ'... ----> 'Gg', 'Dd'...
@@ -56,7 +56,7 @@ convertHangyrToRoman('Annieng') -> '안녕'
 ```
 
 ## getDistanceOfTwoWords
-두 글자 사이의 거리(유사도)를 측정한다. 기본적으로 편집거리 알고리즘을 바탕으로 거리를 측정 한다. 
+두 글자 사이의 거리(유사도)를 측정한다. 기본적으로 편집거리 알고리즘을 바탕으로 거리를 측정 한다.
 알고리즘의 원리는 한글자에서 몇번의 변화를 통해 다른 글자로 변환되는지를 측정하는것이다. 변화의 종류에는 삽입, 삭제, 대체 등이 있다.
 각 변화가 일어나는 경우에 대해  weight를 다르게 주면 좀더 효율적인 거리 측정이 가능하다.
 ```
@@ -65,7 +65,7 @@ getDistanceOfTwoWord(['안녕'], ['안넝']) ->  1
 
 * [레빈슈타인 디스턴스](http://hsp1116.tistory.com/41)
 
-## Dict 
+## Dict
 
 
 ### convertFileHangyrToRoman
