@@ -8,7 +8,9 @@ const deleteOnce = (str) => {
     // var word = words[w];
     for (var i = 0; i < str.length; i++) {
       var a = str.substr(0, i) + str.substr(i + 1, str.length);
-      ret.push(a);
+      if(ret.indexOf(a) === -1) {
+        ret.push(a);
+      }
     }
   // }
   return ret;

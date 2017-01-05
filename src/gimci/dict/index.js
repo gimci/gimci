@@ -37,6 +37,9 @@ const buildNew = (srcPath, destPath) => {
   let base = ''
 
   data.map(elem => {
+    // Delete space
+    elem = elem.replace(/(^\s*)|(\s*$)/, '');
+
     tokens = GenerateToken.byDeletion(elem)
     base = tokens['base']
     dict = insertIntoDict(base, base, dict)
