@@ -54,7 +54,9 @@ getDistanceOfTwoWord(['안녕'], ['안넝']) ->  1
 
 
 ### convertFileHangyrToRoman
-한글로된 파일을 로마자로 변환 한다. 예를들어 default로 gimci프로젝트에서는 elementaryKorean.hangul.txt데이터 파일을 로마자로 변환하여 elementrayKorean.romanized.txt파일을 생성한다.
+한글로된 파일을 로마자로 변환 한다. 예를들어 default로 gimci프로젝트에서는 elementaryKorean.hangul.txt데이터 파일을 로마자로 변환하여 elementaryKorean.romanized.txt파일을 생성한다.
+>elementaryKorean.hangul.txt의 데이터들은 의미가 존재하는 알맞은 단어들을 가지고 있다.
+
 ```
 ****elementaryKorean.hangul.txt****
 가게
@@ -62,9 +64,10 @@ getDistanceOfTwoWord(['안녕'], ['안넝']) ->  1
 가구
 가구
 가까워지다
+```
 
-
-****elementrayKorean.romanized.txt****
+```
+****elementaryKorean.romanized.txt****
 gagei
 gagieg
 gagu
@@ -76,7 +79,26 @@ gaGgaUejida
 romanized된 txt파일의 정보를 json 형태의 데이터로 생성한다.
 > (Romanize된 데이터를 가지고 하기때문에 한글로된 파일은 convertFileHangyrToRoman을 통해 로마자로 된 파일로 우선 변형하여야 한다.)
 
-json의 정보는 txt정보를 가지고 최대 2번 오직 delete연산을 통해 변화가능한 모든 정보를 hashtable형태로 저장한다. delete, insert, transpose, replace 를 최대 2번 수행하는  [Peter Norvig](http://norvig.com/spell-correct.html)알고리즘과는 다른 방식을 가진다. 이 hashtable은 key 와 elem으로 구성되고 key는 모든 변형가능한 데이터이고 elem에는 refer정보 즉, delete가 되기전의 정보를 저장하고 있다.
+json의 정보는 elementaryKorean.romanized.txt의 words정보를 가지고 최대 2번 오직 delete연산을 통해 변화가능한 모든 token을 hashtable형태로 저장한다. delete, insert, transpose, replace 를 최대 2번 수행하는  [Peter Norvig](http://norvig.com/spell-correct.html)알고리즘과는 다른 방식을 가진다. 이 hashtable은 key 와 elem으로 구성되고 key는 모든 변형가능한 데이터(GenerateToken을 통해 생성된 모든token)이고 ==elem은 refer정보 즉, delete로 변형 되기 전의 word를(elementaryKorean.romanized.txt의 데이터) 가진다.==
+
+```
+****elementaryKorean.romanized.txt****
+gagei
+gagieg
+...
+```
+```
+**** tokenSet of 'gagei' ****
+{'gagei', agei', 'ggei', 'gaei', 'gagi', 'gage', 'gei', 'aei', 'agi','age',
+ 'gei','ggi', 'gge', 'aei', ..... }
+```
+```
+****elementaryKorean.romanized.dict****
+{"gagei":{"refer":["gagei","gangjei"]},"agei":{"refer":["gagei"]}, .....
+```
+위에서 gagei는 GenerateToken을 통해 최대 2번까지 delete연산으로 tokenSet을 만든다. 여기서 'gagei'는 각 tokenSet의 token의 refer가 된다. 따라서 'gagei' 의 refer 는 'gagei'이다. 또한 'gangjei'를 generatedToken을 통해 tokenSet을 만들면 'gagei'가 존재하기때문에 'gangjei'도 'gangei'의 refer에 포함되어 있는것을 확인 할 수 있다.
+
+이렇게 생성된 elemnttaryKorean.romanized.dict는 앞으로 search기능을 사용하기위한 precalculation된 데이터로써 사용된다.
 
 
 
