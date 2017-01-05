@@ -17,6 +17,7 @@ import dict from './dict'
 import FileUtils from './utils/FileUtils'
 import search from './search'
 import { convertHangyrToRoman, convertRomanToHangyr } from './transcribe'
+import generateToken from './utils/GenerateToken'
 
 export {
   FileUtils,
@@ -24,5 +25,6 @@ export {
   dict,
   search,
   convertHangyrToRoman,
-  convertRomanToHangyr
+  convertRomanToHangyr,
+  generateToken
 }
