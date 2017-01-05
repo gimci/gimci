@@ -111,7 +111,7 @@ gagieg
 **** elementaryKorean.romanized.dict.json ****
 {"gagei":{"refer":["gagei","gangjei"]},"agei":{"refer":["gagei"]}, .....
 ```
-위에서 gagei는 GenerateToken을 통해 최대 2번까지 delete연산으로 tokenSet을 만든다. 여기서 'gagei'는 각 tokenSet의 token의 refer가 된다. 따라서 'gagei' 의 refer 는 'gagei'이다. 또한 'gangjei'를 generatedToken을 통해 tokenSet을 만들면 'gagei'가 존재하기때문에 'gangjei'도 'gangei'의 refer에 포함되어 있는것을 확인 할 수 있다.
+위에서 'gagei'는 GenerateToken을 통해 최대 2번까지 delete연산으로 tokenSet을 만든다. 여기서 'gagei'는 각 tokenSet의 token의 refer가 된다. 따라서 'gagei' 의 refer 는 'gagei'이다. 또한 'gangjei'를 generatedToken을 통해 tokenSet을 만들면 'gagei'가 존재하기때문에 'gangjei'도 'gangei'의 refer에 포함되어 있는것을 확인 할 수 있다.
 
 이렇게 생성된 elementaryKorean.romanized.dict.json은 앞으로 search기능을 사용하기위한 precalculation된 데이터로써 사용된다.
 
@@ -127,6 +127,7 @@ search('안넝') -> { tier1: [], tier2:['안녕'], tier3: ['안경', '안정', '
 search('앉녕') -> { tier1: [], tier2: [ '안녕', '안정' ], tier3: [ '눈병', '안경' ] }
 ```
 input과 dict(elementaryKorean.romanized.dict)를 비교하는 방식은 다음과 같다.
+
 1. dict === input ----> tier1
 2. delete(dict) === input ----> tier2
 3. dict === delete(input) ----> tier2
@@ -141,4 +142,4 @@ input과 dict(elementaryKorean.romanized.dict)를 비교하는 방식은 다음�
 예를 들어 input '안녕(Anneing)'은 delete를 통해 '안ㅕㅇ(Anieng)'이 될 수 있다. 또한 dict의 '안경(Angieng)'은 delete를 통해 '안ㅕㅇ(Anneing)'이 될 수 있으므로 이 경우가 4에 해당한다.
 
 
-==우리가 이러한 연산을 빨리할 수 있는 이유는 사전에 buildNew()를 통해 dict를 precalculation하여 delete연산을 최대 2번까지 적용하여 만들어지는 모든 경우에 대한 데이터를(dict)를 사전에 생성하여 refer에 저장해 놓기 때문에 delete(dict)를 계산하지않고 input을 key로하여 해당하는 refer들만 비교하면 되기 떄문이다.==
+우리가 이러한 연산을 빨리할 수 있는 이유는 사전에 buildNew()를 통해 dict를 precalculation하여 delete연산을 최대 2번까지 적용하여 만들어지는 모든 경우에 대한 데이터를(dict)를 사전에 생성하여 refer에 저장해 놓기 때문에 delete(dict)를 계산하지않고 input을 key로하여 해당하는 refer들만 비교하면 되기 떄문이다.
