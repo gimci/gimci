@@ -22,15 +22,15 @@ const insertIntoDict = (elem, base, dict) => {
 }
 
 /* Default Paths */
-const _srcPath = ''
-const _destPath = ''
+const _srcPath = '../assets/elementaryKorean.romanized.txt'
+const _destPath = '../assets/elementaryKorean.dict.json'
 
 /**
  *
  */
-const buildNew = (srcPath, destPath) => {
+const buildNew = (srcPath = _srcPath, destPath = _destPath) => {
   let dict = {}
-  const _data = File.read('../../assets/elementaryKorean.romanized.txt')
+  const _data = File.read(srcPath)
   const data = _data.match(/[^\r\n]+/g);
 
   let tokens = {}
@@ -55,7 +55,7 @@ const buildNew = (srcPath, destPath) => {
     })
   })
   console.log('Finished building new dictionary')
-  File.write('../../assets/elementaryKorean.dict.json', dict)
+  File.write(destPath, dict)
 }
 
 export default {

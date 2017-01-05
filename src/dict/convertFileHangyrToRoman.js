@@ -8,8 +8,8 @@ import { convertHangyrToRoman } from '../transcribe'
 
 
 // Default paths
-const _srcPath = '../../assets/elementaryKorean.hangul.txt'
-const _destPath = '../../assets/elementaryKorean.romanized.txt'
+const _srcPath = '../assets/elementaryKorean.hangul.txt'
+const _destPath = '../assets/elementaryKorean.romanized.txt'
 
 /**
  *

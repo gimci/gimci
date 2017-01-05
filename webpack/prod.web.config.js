@@ -9,7 +9,7 @@ module.exports = {
   },
   output: {
     path: './build',
-    filename: "bundle.js"
+    filename: "gimci.js"
   },
   plugins: [
     new webpack.NoErrorsPlugin(),

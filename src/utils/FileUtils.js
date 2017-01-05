@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-let _srcPath = '../../data/elementaryKorean.dict.json'
+let _srcPath = '../../assets/elementaryKorean.dict.json'
 
 /**
  *

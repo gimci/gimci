@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "set NODE_ENV=web&& webpack-dev-server --colors --content-base build/ --host 0.0.0.0 --port 6001 --config ./webpack/dev.config.js",
     "build:web": "webpack -p --config webpack/prod.web.config.js",
-    "build:node": "babel src/gimci -d build/gimci",
+    "build:node": "babel src/ -d build/",
     "clean": "rm -rf ./build/gimci/*"
   },
   "author": {

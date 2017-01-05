@@ -5,17 +5,16 @@ import convertHangyrToRoman from './transcribe/convertHangyrToRoman'
 import convertRomanToHangyr from './transcribe/convertRomanToHangyr'
 
 /* Default paths */
-const _dictPath = '../../assets/elementaryKorean.dict.json'
+const _dictPath = '../assets/elementaryKorean.dict.json'
 
 /**
  *
  */
-
 const search = (_query, dictPath = _dictPath) => {
   const query = convertHangyrToRoman(_query)
   let dict =
     process.env.NODE_ENV === 'web'
-    ? require(`../../assets/elementaryKorean.dict.json`)
+    ? require(`../assets/elementaryKorean.dict.json`)
     : JSON.parse(File.read(dictPath))
 
   const tokensOfQuery = GenerateToken.byDeletion(query)
