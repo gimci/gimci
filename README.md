@@ -50,7 +50,7 @@ convertHangyrToRoman('Annieng') -> '안녕'
 
 위이 2가지 특성을 고려하여 모음을 기준으로 모음 앞에서 단어를 잘라낸다음 뒤에서부터 읽어나가면서 모음이 소문자일 경우와 대문자일 경우를 나누어서 글자를 결합해 나간다.
 ```
-'Annieng' -> ['Ann', 'i', 'e', 'ng'] -> ['Ann', 'i', 'eng'] -> ['Ann', 'ieng'] -> ['An', 'nieng']
+'Annieng' -> ['Ann', 'i', 'eng'] -> ['Ann', 'ieng'] -> ['An', 'nieng']
 ```
 
 ## getDistanceOfTwoWords
