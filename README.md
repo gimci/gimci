@@ -1,28 +1,26 @@
-# 현재 작업중입니다
-#  Gimci  ㄱㅣㅁㅊㅣ
-*JS Natural Language Processing Module for Korean (한글 자연어처리 모듈)*
-[Gimci](https://gimci.github.io/) is Processing Korean with the character-based metric costs not only the amount of calculation but it also reaps the accuracy off. Meet the letter-based processing with the newly devised Korean-Roman rule. Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
+# ![gimci](https://avatars2.githubusercontent.com/u/22726552?v=3&s=200) Gimci
+[![npm gimci](https://badge.fury.io/js/gimci.svg)](https://badge.fury.io/js/gimci) [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()
+
+## JS Natural Language Processing Module for Korean (한글 자연어처리 모듈)
+Processing text in Korean with the character-based metric costs not only the great amount of calculation but it also reaps the quality of search off. Here you have a letter-based processing mechanism with the newly devised romanization rule (hangul-roman). Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
 
 ## Motivation
->낱자 단위 처리 및 로마자 전사법 개정을 통한 한글 자연어 처리 개선 연구는 2016 년 현재 사용되고 있는 한글 자연어 처리 방식과 그 알고리즘을 개선하기 위해 기획되었다. 자연어처리 (Natural Language Processing, NLP) 는 정보통신기기가 널리 보급되고 Data 가 기하급수적으로 생성되길 거듭하는 지금, 컴퓨터과학의 가장 주목 받는 영역 중 하나이다. 한글로 된 Data 의 처리 성능을 개선하는 것은 이러한 대량의 Data 를 체계화하고 가공하는 것에 도움이 되는 것은 물론, 인간과 기계의 소통을 돕는 등 다양한 분야에서 효용을 만들 수 있다. 현재 사용되는 기술 혹은 지금의 패러다임에서 인지한 주요한 네 가지 문제는 다음과 같다
+Hangul characters are each composed of two to three letters (constructing block, 낱자): Initial (초성), Medial (중성), Final (종성). Traditional langauge processing models of Hangul handled the text with the unit of character meaning it considered the total possibilities of11172. (Initial 19 * Medial 21 * Final 28) when dealing with the next character to come. This is a tremendous amount if you scale up the volume to be processed.
 
-`첫째` 현재 학계 및 업계에 알려진 Natural Language Processing 알고리즘들을 한글 Data 에 원활히 적용하지 못하고 있다.
+Now if we can, at all, treat it by the unit of 'letter', the problem may shrink excessively. (Rough calculation dictates that we have 40 (Standard 24 + Combined 16) possibilities to look ahead)
 
-`둘째` “낱자” (Letter) 라는 단위의 성분이 존재하는데 현재의 대부분은 “글자” 를 단위로 Data 를 처리한다. 즉, 처리 단위가 최소(Minimal) 이지 않다.
+Quite a jump in the overall performance! But how could we possibly achieve this? An idea of constructing a wholly new set of Romanization began here. it later turned out that the new rule also shed a light to a relationship between each letter of Hangul.
 
-`셋째` 작금의 한글 – 로마자 전사법이 기계의 언어처리는 물론 사용자 (자연어 화자) 들의 언어 인식에도 혼란을 주고 있다.
-
-`넷째`한글이라는 글자체계의 특성을 반영하지 않고 있다.
-
+## Get Started
+Gimci is implemented in JavaScript, with the view of making i runnable at both web web browsers and native operating systems. Start by installing via npm (node.js)
 
 
-**위와 같은 이슈들의 합리적인 해결방안을 모색하고, 실제 개선안을 반영한 모델을 구현함으로써, 알고리즘의 성능을 향상시키고, 궁극적으로 다음 세대의 한글 자연어처리 패러다임을 제시할 수 있다**
-
-## Installation
-npm으로 간편하게 설치 할 수  있다..
 ```
 npm install --save gimci
 ```
+
+## Live Demo
+[Live Demo link](https://www.youtube.com/watch?v=ccoCD131Fb8)
 
 #APIs
 ## convertHangyrToRoman
@@ -30,14 +28,8 @@ npm install --save gimci
 ```
 convertRomanToHangyr('안녕') -> 'Annieng'
 ```
- * [후쿠이 레이 전사법](http://www.tufs.ac.jp/ts/personal/choes/korean/middle/Sfukui.html)
- * 박승현 전사법
 
-후쿠이 레이 전사법과 비교되는 특징
-
-1. 쌍소리의 첫글자를 대문자로 표시 'ㄲ', 'ㄸ'... ----> 'Gg', 'Dd'...
-2. 초성이 'ㅇ'인 경우에 이를 무시하고 모음을 대문자로 표시 '아', '어'...   ----> 'A', 'E'...
-
+* Bagsynghien rule (박승현 전사법,document to be made shortly)
 
 ## convertRomanToHangyr
 로마자를 다시 한글로 변화 시킨다.
@@ -52,7 +44,7 @@ convertHangyrToRoman('Annieng') -> '안녕'
 
 위이 2가지 특성을 고려하여 모음을 기준으로 모음 앞에서 단어를 잘라낸다음 뒤에서부터 읽어나가면서 모음이 소문자일 경우와 대문자일 경우를 나누어서 글자를 결합해 나간다.
 ```
-'Annieng' -> ['Ann', 'i', 'e', 'ng'] -> ['Ann', 'i', 'eng'] -> ['Ann', 'ieng'] -> ['An', 'nieng']
+'Annieng' -> ['Ann', 'i', 'eng'] -> ['Ann', 'ieng'] -> ['An', 'nieng']
 ```
 
 ## getDistanceOfTwoWords
