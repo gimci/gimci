@@ -1,13 +1,13 @@
 # ![gimci](https://avatars2.githubusercontent.com/u/22726552?v=3&s=200) Gimci
 [![npm gimci](https://badge.fury.io/js/gimci.svg)](https://badge.fury.io/js/gimci) [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()
 
-*JS Natural Language Processing Module for Korean (한글 자연어처리 모듈)*
-[Gimci](https://gimci.github.io/) is Processing Korean with the character-based metric costs not only the amount of calculation but it also reaps the accuracy off. Meet the letter-based processing with the newly devised Korean-Roman rule. Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
+## JS Natural Language Processing Module for Korean (한글 자연어처리 모듈)
+Processing text in Korean with the character-based metric costs not only the great amount of calculation but it also reaps the quality of search off. Here you have a letter-based processing mechanism with the newly devised romanization rule (hangul-roman). Gimci is designed to boost the overall performance of Natural Language Processing models of Korean, and improve understanding of the Korean writing system in a remarkably different way.
 
 ## Motivation
 Hangul characters are each composed of two to three letters (constructing block, 낱자): Initial (초성), Medial (중성), Final (종성). Traditional langauge processing models of Hangul handled the text with the unit of character meaning it considered the total possibilities of11172. (Initial 19 * Medial 21 * Final 28) when dealing with the next character to come. This is a tremendous amount if you scale up the volume to be processed.
 
-Now if we can, at all, treat it by the unit of 'letter', the problem may shrink excessively. (Rough calculation dictates that we have40 (Standard 24 + Combined 16) possibilities to lookahead)
+Now if we can, at all, treat it by the unit of 'letter', the problem may shrink excessively. (Rough calculation dictates that we have 40 (Standard 24 + Combined 16) possibilities to look ahead)
 
 Quite a jump in the overall performance! But how could we possibly achieve this? An idea of constructing a wholly new set of Romanization began here. it later turned out that the new rule also shed a light to a relationship between each letter of Hangul.
 
@@ -28,14 +28,8 @@ npm install --save gimci
 ```
 convertRomanToHangyr('안녕') -> 'Annieng'
 ```
- * [후쿠이 레이 전사법](http://www.tufs.ac.jp/ts/personal/choes/korean/middle/Sfukui.html)
- * 박승현 전사법
 
-후쿠이 레이 전사법과 비교되는 특징
-
-1. 쌍자음의 첫글자를 대문자로 표시 'ㄲ', 'ㄸ'... ----> 'Gg', 'Dd'...
-2. 초성이 'ㅇ'인 경우에 이를 무시하고 모음을 대문자로 표시 '아', '어'...   ----> 'A', 'E'...
-
+* Bagsynghien rule (박승현 전사법,document to be made shortly)
 
 ## convertRomanToHangyr
 로마자를 다시 한글로 변화 시킨다.
