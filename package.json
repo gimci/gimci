@@ -1,19 +1,19 @@
 {
   "name": "gimci",
-  "version": "1.0.0",
+  "version": "1.1.4",
   "description": "Korean Natural Language Processing JavaScript library",
-  "main": "index.js",
+  "main": "./lib",
   "scripts": {
     "dev": "set NODE_ENV=web&& webpack-dev-server --colors --content-base build/ --host 0.0.0.0 --port 6001 --config ./webpack/dev.config.js",
     "build:web": "webpack -p --config webpack/prod.web.config.js",
-    "build:node": "babel src/ -d build/",
+    "build:node": "babel src/ -d lib/",
     "clean": "rm -rf ./build/gimci/*"
   },
-  "author": {
-    "name": "engine",
-    "email": "enginehenryed@gmail.com"
-  },
-  "contributors": [
+  "authors": [
+    {
+      "name": "engine",
+      "email": "enginehenryed@gmail.com"
+    },
     {
       "name": "uenieng",
       "email": "wonyeong91@gmail.com"
