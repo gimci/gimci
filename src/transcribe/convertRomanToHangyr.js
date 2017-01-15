@@ -7,30 +7,44 @@ import {INITIAL, MEDIAL, FINAL, JAMO} from './bagsynghienRule'
  * @return char Hangyr character
  */
 const compose = (str) => {
-  const re = /([aeiouyAEIOUY]+)/
-  const lettersSegmented = str.split(re)
+  if (str.includes('\'')) {
+    const charCode = getCharCodeByRoman(str, JAMO)
+    return String.fromCharCode(charCode)
+  } else {
+    const re = /([aeiouyAEIOUY]+)/
+    const lettersSegmented = str.split(re)
 
-  const initialId = getByRoman(lettersSegmented[0], INITIAL)
-  const medialId = getByRoman(lettersSegmented[1].toLowerCase(), MEDIAL)
-  const finalId =
-    lettersSegmented.length >= 2
-    ? getByRoman(lettersSegmented[2], FINAL)
-    : undefined
+    const initialId = getIdxByRoman(lettersSegmented[0], INITIAL)
+    const medialId = getIdxByRoman(lettersSegmented[1].toLowerCase(), MEDIAL)
+    const finalId =
+      lettersSegmented.length >= 2
+      ? getIdxByRoman(lettersSegmented[2], FINAL)
+      : undefined
 
-  const charCode = 0xAC00 + 28 * 21 * initialId + 28 * medialId + finalId
-  return String.fromCharCode(charCode)
+    const charCode = 0xAC00 + 28 * 21 * initialId + 28 * medialId + finalId
+    return String.fromCharCode(charCode)
+  }
 }
 
 /*
  *
  */
-const getByRoman = (ro, haystack) => {
+const getIdxByRoman = (ro, haystack) => {
   for (let i = 0; i < haystack.length; i++) {
     if (haystack[i].ro === ro) {
       return i
     }
   }
   console.log(`Couldn't find ${ro} in ${haystack}`)
+}
+
+const getCharCodeByRoman = (ro, haystack) => {
+
+  for (let elem in haystack) {
+    if (haystack[elem].ro === ro) {
+      return haystack[elem].uni
+    }
+  }
 }
 
 
@@ -51,7 +65,6 @@ const segmentByVowel = (str) => {
     }
   }
   ret.push(str.slice(slicePosition))
-  console.log([1], ret);
   return ret;
 }
 
@@ -101,7 +114,6 @@ const segmentIntoChars = (segmentedByVowel) => {
   if(segs[0] === '') {
     segs.splice(0, 1)
   }
-  console.log([2], segs);
   return segs
 }
 
