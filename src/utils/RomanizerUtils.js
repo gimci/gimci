@@ -5,16 +5,15 @@ import readline from 'readline'
 
 /* Internals*/
 import { convertHangyrToRoman } from '../transcribe'
-
-
-// Default paths
-const _srcPath = '../assets/elementaryKorean.hangul.txt'
-const _destPath = '../assets/elementaryKorean.romanized.txt'
+import conf from '../conf'
 
 /**
  *
  */
-const convertFileHangyrToRoman = (srcPath = _srcPath, destPath = _destPath) => {
+const convertFileHangyrToRoman = () => {
+  const srcPath = conf.textSrcPath
+  const destPath = conf.textDestPath
+  
   const rl = readline.createInterface({
     input: fs.createReadStream(srcPath),
     output: process.stdout,
