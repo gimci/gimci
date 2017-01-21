@@ -1,29 +1,48 @@
 /* Internals */
-import GenerateToken from './utils/generateToken'
+import Str from './utils/StringUtils'
 import File from './utils/FileUtils'
-import convertHangyrToRoman from './transcribe/convertHangyrToRoman'
-import convertRomanToHangyr from './transcribe/convertRomanToHangyr'
+import { convertHangyrToRoman, convertRomanToHangyr } from './transcribe'
+import conf from './conf'
 
-/* Default paths */
-const _dictPath = '../assets/elementaryKorean.dict.json'
-const _defaultFlag = 'loose'
+
+/**
+ * const dict = {
+ *  'foo': { 
+ *    'refer': ['foo', 'foox', 'fooy' ...]
+ *  },
+ *  'bar': {
+ *    'refer': [...]
+ *  }
+ * }
+ */
 
 /**
  *
+ * 
+ * T1: d === q; exact match
+ * T2: d === proc(q); d matches processed query
+ * T3: (those not included in T1, T2)
+ *    LH  del(d) === q => found in the entry but entry !== refer
+ *    LH  d === del(q)
+ *    L   del(d) === proc(q)
+ * T4: (not in T1, T2, T3)
+ *    LH  del(d) === del(q)
+ *    L   del(d) === proc(del(q))
  */
-const search = (_query, dictPath = _dictPath, flag = _defaultFlag) => {
+const search = (_query, mode = conf.searchMode) => {
 
   // execute softSearch which have tier2 ignoring difference of lower, uppercase && single quota '
-  if(flag === 'hard') {
-    return hardSearch(_query, dictPath, flag) }
+  // if(mode === 'hard') {
+  //   return hardSearch(_query, dictPath, mode) }
 
   const query = convertHangyrToRoman(_query)
 
   let dict = require('../assets/elementaryKorean.dict.json')
 
+
   // regex to delete single quota '
   const pattern = /[^(가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9)]/gi
-  const tokensOfQuery = GenerateToken.byDeletion(query)
+  const tokensOfQuery = Str.createTokensByDeletion(query)
   const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])
   let res = {}
   res['tier1'] = []
@@ -32,12 +51,16 @@ const search = (_query, dictPath = _dictPath, flag = _defaultFlag) => {
   res['tier4'] = []
 
   // case1
+  // When the dict has exact 'query' entry ANDit is standard (not derivatives),
   if (
     dict.hasOwnProperty(query)
     && dict[query]['refer'].includes(query)
   ) {
     res['tier1'].push(query)
   }
+
+  // case2
+  // T2. describtion above.
 
 
   // case3
@@ -129,28 +152,24 @@ const search = (_query, dictPath = _dictPath, flag = _defaultFlag) => {
     })
   }
 
-  res = convertSearchRetToHangul(res, flag)
+  res = convertSearchRetToHangul(res, mode)
   return res
-
 }
 
 
 /*
  *
  */
-const hardSearch = (_query, dictPath = _dictPath, flag) => {
+const hardSearch = (_query, mode = conf.searchMode) => {
   const query = convertHangyrToRoman(_query)
+  const dictPath = conf.dictPath
 
-  // temporary off
-  // let dict =
-  //   process.env.NODE_ENV === 'web'
-  //   ? require(`../assets/elementaryKorean.dict.json`)
-  //   : JSON.parse(File.read(dictPath))
   let dict = require('../assets/elementaryKorean.dict.json')
+  
   // regex to delete single quota '
 
 
-  const tokensOfQuery = GenerateToken.byDeletion(query)
+  const tokensOfQuery = Str.createTokensByDeletion(query)
   const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])
   let res = {}
   res['tier1'] = []
@@ -209,7 +228,7 @@ const hardSearch = (_query, dictPath = _dictPath, flag) => {
     }
   })
 
-  res = convertSearchRetToHangul(res, flag)
+  res = convertSearchRetToHangyr(res, mode)
   return res
 }
 
@@ -218,7 +237,7 @@ const hardSearch = (_query, dictPath = _dictPath, flag) => {
 /*
  *
  */
-const convertSearchRetToHangul = (tierSet, flag) => {
+const convertSearchRetToHangul = (tierSet, mode) => {
   for (let i = 0; i < tierSet['tier1'].length; i++) {
     if (tierSet['tier1'][i] !== '') {
       tierSet['tier1'][i] = convertRomanToHangyr(tierSet['tier1'][i])
@@ -230,7 +249,7 @@ const convertSearchRetToHangul = (tierSet, flag) => {
   for (let i = 0; i < tierSet['tier3'].length; i++) {
     tierSet['tier3'][i] = convertRomanToHangyr(tierSet['tier3'][i])
   }
-  if(flag !== 'hard') {
+  if(conf.searchMode !== 'hard') {
     for (let i = 0; i < tierSet['tier4'].length; i++) {
       tierSet['tier4'][i] = convertRomanToHangyr(tierSet['tier4'][i])
     }

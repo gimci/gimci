@@ -1,17 +1,6 @@
 /**/
+import fs from 'fs'
 let _srcPath = '../../assets/elementaryKorean.dict.json'
-let fs = false
-
-
-/* Sanity check */
-try {
-  fs = require('fs')
-  console.log("node js is in host environment")
-} catch (err){
-  fs = false
-  console.log("Cannot load node modules")
-}
-
 
 /**
  *

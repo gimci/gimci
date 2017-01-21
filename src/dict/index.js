@@ -1,15 +1,17 @@
 /* Internals */
 import warning from '../utils/warning'
-import GenerateToken from '../utils/generateToken'
+import Str from '../utils/StringUtils'
 import File from '../utils/FileUtils'
 import { convertHangyrToRoman } from '../transcribe'
-import convertFileHangyrToRoman from './convertFileHangyrToRoman'
+import conf from '../conf'
 
 
-/**/
+/**
+ * Auxiliary method.
+ */
 const insertIntoDict = (elem, base, dict) => {
   if (!dict[elem]) {
-    dict[elem] = { refer: [base] }
+    dict[elem] = { refer:   [base] }
   } else {
     for (let i = 0; i < dict[elem]['refer'].length; i++) {
       if (dict[elem]['refer'][i] === base) {
@@ -21,16 +23,12 @@ const insertIntoDict = (elem, base, dict) => {
   return dict
 }
 
-/* Default Paths */
-const _srcPath = '../assets/elementaryKorean.romanized.txt'
-const _destPath = '../assets/elementaryKorean.dict.json'
-
 /**
- *
+ * This will create a JSON format file with all the populated data.
  */
-const buildNew = (srcPath = _srcPath, destPath = _destPath) => {
+const populate = () => {
   let dict = {}
-  const _data = File.read(srcPath)
+  const _data = File.read(conf.dictSrcPath)
   const data = _data.match(/[^\r\n]+/g);
 
   let tokens = {}
@@ -40,7 +38,7 @@ const buildNew = (srcPath = _srcPath, destPath = _destPath) => {
     // Delete space
     elem = elem.replace(/(^\s*)|(\s*$)/, '');
 
-    tokens = GenerateToken.byDeletion(elem)
+    tokens = Str.createTokensByDeletion(elem)
     base = tokens['base']
     dict = insertIntoDict(base, base, dict)
 
@@ -54,11 +52,11 @@ const buildNew = (srcPath = _srcPath, destPath = _destPath) => {
       dict = insertIntoDict(delete2Elem, base, dict)
     })
   })
-  console.log('Finished building new dictionary')
-  File.write(destPath, dict)
+
+  File.write(conf.dictDestPath, dict)
+  console.log('Finished building new dictionary', conf.dictDestPath)
 }
 
 export default {
-  buildNew,
-  convertFileHangyrToRoman
+  populate,
 }

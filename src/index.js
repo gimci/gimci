@@ -12,12 +12,12 @@
 
 import getDistanceOfTwoWords from './getDistanceOfTwoWords'
 import Dict from './Dict'
-import FileUtils from './utils/FileUtils'
+import conf from './conf'
 import search from './search'
 import { convertHangyrToRoman, convertRomanToHangyr } from './transcribe'
 
 export {
-  FileUtils,
+  conf,
   getDistanceOfTwoWords,
   Dict,
   search,

@@ -31,7 +31,7 @@ const deleteTwice = (str) => {
 /**
  *
  */
-const byDeletion = (str, num) => {
+const createTokensByDeletion = (str, num) => {
   let tokenSet = {};
   tokenSet['base'] = str;
   tokenSet['delete1'] = deleteOnce(str)
@@ -43,7 +43,7 @@ const byDeletion = (str, num) => {
   }
 }
 
-let GenerateToken = {}
-GenerateToken.byDeletion = byDeletion
+export default {
+  createTokensByDeletion
+}
 
-export default GenerateToken
