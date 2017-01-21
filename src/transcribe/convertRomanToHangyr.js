@@ -7,24 +7,29 @@ import {INITIAL, MEDIAL, FINAL, JAMO} from './bagsynghienRule'
  * @return char Hangyr character
  */
 const compose = (str) => {
-  const re = /([aeiouyAEIOUY]+)/
-  const lettersSegmented = str.split(re)
+  if (str.includes('\'')) {
+    const charCode = getCharCodeByRoman(str, JAMO)
+    return String.fromCharCode(charCode)
+  } else {
+    const re = /([aeiouyAEIOUY]+)/
+    const lettersSegmented = str.split(re)
 
-  const initialId = getByRoman(lettersSegmented[0], INITIAL)
-  const medialId = getByRoman(lettersSegmented[1].toLowerCase(), MEDIAL)
-  const finalId =
-    lettersSegmented.length >= 2
-    ? getByRoman(lettersSegmented[2], FINAL)
-    : undefined
+    const initialId = getIdxByRoman(lettersSegmented[0], INITIAL)
+    const medialId = getIdxByRoman(lettersSegmented[1].toLowerCase(), MEDIAL)
+    const finalId =
+      lettersSegmented.length >= 2
+      ? getIdxByRoman(lettersSegmented[2], FINAL)
+      : undefined
 
-  const charCode = 0xAC00 + 28 * 21 * initialId + 28 * medialId + finalId
-  return String.fromCharCode(charCode)
+    const charCode = 0xAC00 + 28 * 21 * initialId + 28 * medialId + finalId
+    return String.fromCharCode(charCode)
+  }
 }
 
 /*
  *
  */
-const getByRoman = (ro, haystack) => {
+const getIdxByRoman = (ro, haystack) => {
   for (let i = 0; i < haystack.length; i++) {
     if (haystack[i].ro === ro) {
       return i
@@ -33,9 +38,18 @@ const getByRoman = (ro, haystack) => {
   console.log(`Couldn't find ${ro} in ${haystack}`)
 }
 
+const getCharCodeByRoman = (ro, haystack) => {
+
+  for (let elem in haystack) {
+    if (haystack[elem].ro === ro) {
+      return haystack[elem].uni
+    }
+  }
+}
+
 
 /*
- * slice word start with vowel
+ * slice word start with vowel and '
  */
 const segmentByVowel = (str) => {
   let slicePosition = 0
@@ -59,7 +73,9 @@ const segmentByVowel = (str) => {
  * check vowel
  */
 const vowel = (c) => {
-  return ['a', 'e', 'i', 'o', 'u', 'y'].indexOf(c.toLowerCase()) !== -1
+  if(c === '\'') {
+    return true
+  } else return ['a', 'e', 'i', 'o', 'u', 'y'].indexOf(c.toLowerCase()) !== -1
 }
 
 
@@ -67,10 +83,11 @@ const segmentIntoChars = (segmentedByVowel) => {
   let segs = segmentedByVowel
   const numSegs = segs.length
   for (let i = numSegs - 1; i > 0; i--) {
-    if (segs[i].charAt(0) === segs[i].charAt(0).toLowerCase()) {
-      // check last word is consonant
+    // not a \'(with a single character ex : \'s, \'r, \'p && check lower case consonant
+    if (segs[i].charAt(0) !== '\'' && segs[i].charAt(0) === segs[i].charAt(0).toLowerCase()) {
+      // check segs[i-1]'s last word is vowel
       if (i !== 0 && !vowel(segs[i - 1].charAt(segs[i - 1].length - 1))) {
-        // check Uppercase consonant
+        // check segs[i-2] not a vowel && uppercase
         if (!vowel(segs[i - 1].charAt(segs[i - 1].length - 2))
             && segs[i - 1].charAt(segs[i - 1].length - 2) === segs[i - 1].charAt(segs[i - 1].length - 2).toUpperCase()) {
           // slice end of two letter and concat
@@ -88,7 +105,7 @@ const segmentIntoChars = (segmentedByVowel) => {
         segs.splice(i, 1)
       }
     } else {
-      // if Uppercase Of Vowel
+      // if Uppercase Of Vowel or \'
       // nothing
     }
   }
