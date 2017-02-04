@@ -2,7 +2,6 @@
 import Str from './utils/StringUtils'
 import File from './utils/FileUtils'
 import {convertHangyrToRoman, convertRomanToHangyr} from './transcribe'
-import conf from './conf'
 
 
 /**
@@ -24,18 +23,13 @@ import conf from './conf'
  * T3: (those not included in T1, T2)
  *    LH  del(d) === q => found in the entry but entry !== refer
  *    LH  d === del(q)
- *    L   del(d) === proc(q)
- *    L   d === proc(del(q))
+ *    LH  del(d) === proc(q)
+ *    LH  d === proc(del(q))
  * T4: (not in T1, T2, T3)
  *    LH  del(d) === del(q)
- *    L   del(d) === proc(del(q))
+ *    LH  del(d) === proc(del(q))
  */
-const search = (_query, mode = conf.searchMode) => {
-
-  // execute softSearch which have tier2 ignoring difference of lower, uppercase && single quota '
-  // if(mode === 'hard') {
-  //   return hardSearch(_query, dictPath, mode) }
-
+const search = (_query) => {
   const query = convertHangyrToRoman(_query)
 
   let dict = require('../assets/elementaryKorean.dict.json')
@@ -64,13 +58,21 @@ const search = (_query, mode = conf.searchMode) => {
   // T2
   // case2
   // describtion above.
-  console.log( [1], query.replace(pattern, "").toLowerCase())
+  console.log([1], query.replace(pattern, "").toLowerCase())
   if (
     dict.hasOwnProperty(query.replace(pattern, "").toLowerCase())
     && dict[query.replace(pattern, "").toLowerCase()]['refer'].includes(query.replace(pattern, "").toLowerCase())
   ) {
-    if (res['tier1'].indexOf(convertRomanToHangyr(query.replace(pattern, "").toLowerCase())) === -1) {
+    if (res['tier1'].indexOf(convertRomanToHangyr(query.replace(pattern, "").toLowerCase())) === -1 && res['tier2'].indexOf(convertRomanToHangyr(query.replace(pattern, "").toLowerCase())) === -1) {
       res['tier2'].push(convertRomanToHangyr(query.replace(pattern, "").toLowerCase()))
+    }
+  }
+  if (
+    dict.hasOwnProperty(query.replace(pattern, ""))
+    && dict[query.replace(pattern, "")]['refer'].includes(query.replace(pattern, ""))
+  ) {
+    if (res['tier1'].indexOf(convertRomanToHangyr(query.replace(pattern, ""))) === -1 && res['tier2'].indexOf(convertRomanToHangyr(query.replace(pattern, ""))) === -1) {
+      res['tier2'].push(convertRomanToHangyr(query.replace(pattern, "")))
     }
   }
 
@@ -103,35 +105,25 @@ const search = (_query, mode = conf.searchMode) => {
     }
   })
 
-  // case5
-  //  L   del(d) === proc(q)
-  if (mode === 'loose') {
-    if (
-      dict.hasOwnProperty(query.replace(pattern, "").toLowerCase())
-      && !dict[query.replace(pattern, "").toLowerCase()]['refer'].includes(query.replace(pattern, "").toLowerCase())
-    ) {
-      dict[query.replace(pattern, "").toLowerCase()]['refer'].map(refer => {
-        if (res['tier1'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(refer)) === -1) {
-          res['tier3'].push(convertRomanToHangyr(refer))
-        }
-      })
-    }
 
-
-    // case6
-    // L   d === proc(del(q))
-    candidates.map(candidate => {
-      if (
-        dict.hasOwnProperty(candidate.replace(pattern, "").toLowerCase())
-        && dict[candidate.replace(pattern, "").toLowerCase()]['refer'].includes(candidate.replace(pattern, "").toLowerCase())
-      ) {
-        if (res['tier1'].indexOf(convertRomanToHangyr(candidate.replace(pattern, "").toLowerCase())) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate.replace(pattern, "").toLowerCase())) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate.replace(pattern, "").toLowerCase())) === -1) {
-          res['tier3'].push(convertRomanToHangyr(candidate.replace(pattern, "").toLowerCase()))
-        }
+  // case5 
+  // del(d) === proc(q) 
+  if (dict.hasOwnProperty(query.replace(pattern, "")) && !dict[query.replace(pattern, "")]['refer'].includes(query.replace(pattern, ""))) {
+    dict[query.replace(pattern, "")]['refer'].map(refer => {
+      if (res['tier1'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(refer)) === -1) {
+        res['tier3'].push(convertRomanToHangyr(refer))
       }
     })
   }
-
+  // case6 
+  // d === proc(del(q)) 
+  candidates.map(candidate => {
+    if (dict.hasOwnProperty(candidate.replace(pattern, "")) && dict[candidate.replace(pattern, "")]['refer'].includes(candidate.replace(pattern, ""))) {
+      if (res['tier1'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1) {
+        res['tier3'].push(convertRomanToHangyr(candidate.replace(pattern, "")))
+      }
+    }
+  })
 
   // T4
   // case7
@@ -150,22 +142,18 @@ const search = (_query, mode = conf.searchMode) => {
     }
   })
 
-  // case8
-  // L   del(d) === proc(del(q))
-  if (mode === 'loose') {
-    candidates.map(candidate => {
-      if (
-        dict.hasOwnProperty(candidate.replace(pattern, "").toLowerCase())
-        && !dict[candidate.replace(pattern, "").toLowerCase()]['refer'].includes(candidate.replace(pattern, "").toLowerCase())
-      ) {
-        dict[candidate.replace(pattern, "").toLowerCase()]['refer'].map(refer => {
-          if (res['tier1'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier4'].indexOf(convertRomanToHangyr(refer)) === -1) {
-            res['tier4'].push(convertRomanToHangyr(refer))
-          }
-        })
-      }
-    })
-  }
+  // case8 
+  // del(d) === proc(del(q)) 
+  candidates.map(candidate => {
+    if (dict.hasOwnProperty(candidate.replace(pattern, "")) && !dict[candidate.replace(pattern, "")]['refer'].includes(candidate.replace(pattern, ""))) {
+      dict[candidate.replace(pattern, "")]['refer'].map(refer => {
+        if (res['tier1'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(refer)) === -1 && res['tier4'].indexOf(convertRomanToHangyr(refer)) === -1) {
+          res['tier4'].push(convertRomanToHangyr(refer))
+        }
+      })
+    }
+  })
+
 
   return res
 }
