@@ -1,5 +1,5 @@
 /**
- * Create a set of tokesn made by deleting exactly one character of the original string.
+ * Create a set of tokens made by deleting exactly one character of the original string.
  * Note that the order of characters in the original string will be kept.
  *
  * e.g. 'star' => ['tar', 'sar', 'str']

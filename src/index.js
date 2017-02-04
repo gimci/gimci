@@ -11,7 +11,6 @@
  */
 
 import getDistanceOfTwoWords from './getDistanceOfTwoWords'
-// import Dict from './Dict'
 import DictUtils from './utils/DictUtils'
 import FileUtils from './utils/FileUtils'
 import RomanizerUtils from './utils/RomanizerUtils'
@@ -21,11 +20,13 @@ import { convertHangyrToRoman, convertRomanToHangyr } from './transcribe'
 
 export {
   conf,
+  convertHangyrToRoman,
+  convertRomanToHangyr,
   getDistanceOfTwoWords,
+  search,
+
+  // utils
   DictUtils,
   FileUtils,
   RomanizerUtils,
-  search,
-  convertHangyrToRoman,
-  convertRomanToHangyr
 }
