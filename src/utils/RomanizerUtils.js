@@ -22,11 +22,13 @@ const convertFileHangyrToRoman = () => {
 
   let fd = fs.openSync(destPath, 'w');
 
-  rl.on('line', function (line) {
-    fs.write(fd, `${convertHangyrToRoman(line)}\n`);
+  rl.on('line', function(line) {
+    fs.write(fd, `${convertHangyrToRoman(line)}\n`, () => {});
   });
 
   console.log('Finished romanizing data in file', srcPath, 'into', destPath)
 }
 
-export default convertFileHangyrToRoman
+export default {
+  convertFileHangyrToRoman
+}

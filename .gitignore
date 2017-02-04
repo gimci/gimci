@@ -166,3 +166,6 @@ fabric.properties
 .idea/
 build/
 _backup/
+
+# built files
+lib/

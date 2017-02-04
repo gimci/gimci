@@ -1,5 +1,6 @@
 /**/
 import fs from 'fs'
+import path from 'path'
 let _srcPath = '../../assets/elementaryKorean.dict.json'
 
 /**
@@ -22,19 +23,6 @@ const write = (destPath, data) => {
     });
   } else {
    // do nothing
-  }
-}
-
-/**
- *
- */
-const resolvePath = (srcPath) => {
-  if (path) {
-    console.log('path resolved', srcPath)
-    let path = require('path')
-    path.join(srcPath, '..')
-  } else {
-    // do nothing
   }
 }
 
