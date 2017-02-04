@@ -3,6 +3,7 @@ import String from './StringUtils'
 import File from './FileUtils'
 import conf from '../conf'
 
+
 /**
  * This will create a JSON format file with all the populated data.
  */
@@ -43,13 +44,14 @@ class Dict {
   }
 
   /**
-   * ...
+   * todos
+   * Document should be made.
    */
   insert(word, base) {
     if (!this._dict[word]) {
       this._dict[word] = { refer: [base] }
     } else {
-      if (this._dict[word]['refer'].indexOf(base) !== -1) {
+      if (this._dict[word]['refer'].indexOf(base) === -1) {
         this._dict[word]['refer'].push(base)
       }
     }
