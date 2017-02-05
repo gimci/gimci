@@ -1,5 +1,5 @@
 /* Internals */
-import warning from './utils/LogUtils'
+import { warning } from './utils/LogUtils'
 import { convertHangyrToRoman } from './transcribe'
 
 

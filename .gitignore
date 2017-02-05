@@ -167,5 +167,8 @@ fabric.properties
 build/
 _backup/
 
-# built files
+# Built files
 lib/
+
+# Assets
+assets/

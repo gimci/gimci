@@ -30,3 +30,12 @@ export {
   FileUtils,
   RomanizerUtils,
 }
+
+/**
+ * Development
+ * takes the input and process as demanded.
+ */
+if ((process.argv)[2] === 'dict') {
+  console.log(1)
+  DictUtils.build()
+}

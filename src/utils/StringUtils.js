@@ -34,17 +34,23 @@ const deleteTwice = (str) => {
  * Takes a string and create an object which contains variations of that string.
  * Variation in this context means the crafted string built by deleting a number of characters
  * from the original string.
+ *
+ *
+ * mode: a // return tokens in array, default.
+ *       s // return tokens in string.
+ *
+ * (str, num = 2) => ({
+ *   base: str,
+ *   del1: [foo, bar, baz,,.],
+ *   del2: [fo, ba, bz,,.]
+ * })
  */
-const createTokensByDeletion = (str, num = 2) => {
+const createTokensByDeletion = (str, mode = 'a') => {
   let tokenSet = {};
   tokenSet['base'] = str;
-  tokenSet['delete1'] = deleteOnce(str)
-  if (num === 1) {
-    return tokenSet
-  } else if (num === 2) {
-    tokenSet['delete2'] = deleteTwice(str)
-    return tokenSet
-  }
+  tokenSet['del1'] = mode === 's' ? deleteOnce(str).join(" ") : deleteOnce(str)
+  tokenSet['del2'] = mode === 's' ? deleteTwice(str).join(" ") : deleteTwice(str)
+  return tokenSet
 }
 
 const removeWhiteSpaces = (str) => {

@@ -20,6 +20,11 @@ const warning = (message) => {
   /* eslint-enable no-empty */
 }
 
-export default {
-  warning
+const log = (msg) => {
+  console.log(msg)
+}
+
+export {
+  warning,
+  log
 }
