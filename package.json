@@ -8,7 +8,8 @@
     "build:web": "webpack -p --config webpack/prod.web.config.js",
     "build:node": "babel src/ -d lib/",
     "clean": "rm -rf ./build/gimci/*",
-    "start:dict": "npm run build:node && node ./lib/index.js dict"
+    "start:dict": "npm run build:node && node ./lib/index.js dict",
+    "start:search": "npm run build:node && node ./lib/index.js search"
   },
   "authors": [
     {

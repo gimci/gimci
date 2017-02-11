@@ -29,7 +29,9 @@ import {convertHangyrToRoman, convertRomanToHangyr} from './transcribe'
  *    LH  del(d) === del(q)
  *    LH  del(d) === proc(del(q))
  */
-const search = (_query) => {
+
+
+const search2 = (_query) => {
   const query = convertHangyrToRoman(_query)
 
   let dict = require('../assets/elementaryKorean.dict.json')
