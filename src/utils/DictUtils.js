@@ -3,7 +3,7 @@ import String from './StringUtils'
 import File from './FileUtils'
 import conf from '../conf'
 import readline from 'readline'
-import { log } from './LogUtils'
+import {log} from './LogUtils'
 import fs from 'fs'
 
 
@@ -37,25 +37,29 @@ const build = (dictSrcPath) => {
 const stage0 = (dictSrcPath) => {
   let tokens = {}
   let rl = readline.createInterface({
-    input: fs.createReadStream(conf.dictSrcPath)
+    input: fs.createReadStream(conf.dictSrcPath),
+    output: fs.createWriteStream(conf.dict0DestPath, {'flags': 'a'})
   })
-  let ws = fs.createWriteStream(conf.dict0DestPath, {'flags': 'a'})
+  // let ws = fs.createWriteStream(conf.dict0DestPath, {'flags': 'a'})
   let i, j
 
-  rl.on('line', function(line) {
+  rl.on('line', function (line) {
     line = String.removeWhiteSpaces(line) // for trailing space at the beginning of file
     tokens = String.createTokensByDeletion(line)
 
-    ws.write(`${line} -refer ${tokens.base}\n`) // write base
+    rl.output.write(`${line} -refer ${tokens.base}\n`) // write base
+    // fs.appendFileSync(conf.dict0DestPath, line)
     for (i = 0; i < tokens.del1.length; i++) {
-      ws.write(`${tokens.del1[i]} -refer ${tokens.base}\n`) // write del1 tokens
+      rl.output.write(`${tokens.del1[i]} -refer ${tokens.base}\n`) // write del1 tokens
     }
     for (j = 0; j < tokens.del2.length; j++) {
-      ws.write(`${tokens.del2[j]} -refer ${tokens.base}\n`) // write del2 tokens
+      rl.output.write(`${tokens.del2[j]} -refer ${tokens.base}\n`) // write del2 tokens
     }
   })
-    .on('close', function(err) {
+    .on('close', function (err) {
       log('end stage0', err)
+      rl.close()
+
 
       // stage1
       stage1()
@@ -67,55 +71,80 @@ const stage0 = (dictSrcPath) => {
  */
 const stage1 = (somePath) => {
 
-  let entries = [] // Checked entry will go into the list
-
+  let processed = [] // Checked entry will go into the list
   let rl = readline.createInterface({
-    input: fs.createReadStream(conf.dictSrcPath)
+    input: fs.createReadStream(conf.dict0DestPath),
+    output: fs.createWriteStream(conf.dict1DestPath, {'flags': 'a'})
   })
-  let ws = fs.createWriteStream(conf.dict1DestPath, {'flags': 'a'})
+
+  let entryInLine
+  let newLine
+  let newLineArr = []
 
   // during some condition,
   let cond = true
-  while (cond) {
-    rl.on('line', function(line) {
-      // if 'line' is not already taken entry, start processing
-      // add it to the 'entries'
+  let i
+  let lineArr = []
 
-      // process it
+  rl.on('line', function (line) {
+    // if 'line' is not already taken entry, start processing
+    // add it to the 'entries'
+    // entryAcc = !entry ? line : entryAcc
+
+    entryInLine = line.split(' ')[0]
+
+    if (!processed.includes(entryInLine)) {
+      processed.push(entryInLine)
+      newLineArr.push(line)
+    } else {
+      for (i = 0; i < processed.length; i++) {
+        if (entryInLine === processed[i]) {
+          lineArr = line.split(' ')
+          newLine = newLineArr[i].split(' ')
+          if (newLine.indexOf(lineArr[2]) === -1) {
+            newLine.push(lineArr[2])
+          }
+          newLineArr[i] = newLine.join(' ')
+        }
+      }
+
+    }
+    // process it
+  })
+    .on('close', function (err) {
+      log('end stage1', err)
+      for (i = 0; i < newLineArr.length; i++) {
+        rl.output.write(`${newLineArr[i]}\n`)
+      }
+      rl.close()
+
+
     })
-      .on('close', function() {
-        // process again with the other entry
-        sumEntryInstances(rl, ws)
-      })
-  }
 }
 
 /**
  *
  */
 const sumEntryInstances = (rl, ws) => {
-
   // Create a readstream again,
   rl = readline.createInterface({
     input: fs.createReadStream(conf.dictSrcPath)
   })
+  // let entry = ''
 
-  rl.on('line', function(line) {
+  rl.on('line', function (line) {
     // if 'line' is not already taken entry, start processing
     // add it to the 'entries'
+    // entry = line.split(' ')[0]
+
 
     // process it
   })
-    .on('close', function() {
+    .on('close', function () {
       // process again with the other entry
+      // sumEntryInstances()
     })
 }
-
-
-
-
-
-
 
 
 /**
@@ -135,7 +164,7 @@ class Dict {
    */
   insert(word, base) {
     if (!this._dict[word]) {
-      this._dict[word] = { refer: [base] }
+      this._dict[word] = {refer: [base]}
     } else {
       if (this._dict[word]['refer'].indexOf(base) === -1) {
         this._dict[word]['refer'].push(base)
