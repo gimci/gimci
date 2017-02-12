@@ -47,6 +47,6 @@ if ((process.argv)[2] === 'dict') {
   rl.question('What do you want to search?', (ans) => {
     console.log(`input: ${ans}`);
     rl.close();
-    search((process.argv)[2])
+    search(ans)
   });
 }
