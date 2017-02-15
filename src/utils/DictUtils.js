@@ -107,7 +107,6 @@ const stage1 = (somePath) => {
           newLineArr[i] = newLine.join(' ')
         }
       }
-
     }
     // process it
   })

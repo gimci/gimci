@@ -2,6 +2,9 @@
 import Str from './utils/StringUtils'
 import File from './utils/FileUtils'
 import {convertHangyrToRoman, convertRomanToHangyr} from './transcribe'
+import readline from 'readline'
+import fs from 'fs'
+import conf from './conf'
 
 
 /**
@@ -31,16 +34,211 @@ import {convertHangyrToRoman, convertRomanToHangyr} from './transcribe'
  */
 
 
-const search2 = (_query) => {
+const search = (_query) => {
   const query = convertHangyrToRoman(_query)
 
-  let dict = require('../assets/elementaryKorean.dict.json')
+  // let dict = require('../assets/dict1.txt')
 
 
   // regex to delete single quota '
   const pattern = /[^(가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9)]/gi
   const tokensOfQuery = Str.createTokensByDeletion(query)
-  const candidates = tokensOfQuery['delete1'].concat(tokensOfQuery['delete2'])
+  const candidates = tokensOfQuery['del1'].concat(tokensOfQuery['del2'])
+  let res = {}
+  res['tier1'] = []
+  res['tier2'] = []
+  res['tier3'] = []
+  res['tier4'] = []
+
+
+  var entryInLine
+  let i
+  let includeFlag = false
+  let lineArr = []
+
+
+  let rl = readline.createInterface({
+    input: fs.createReadStream(conf.dict1DestPath)
+  })
+
+  rl.on('line', function (line) {
+    entryInLine = line.split(' ')[0]
+
+
+    if (query === entryInLine) {
+      lineArr = line.split(' ')
+      for (i = 2; i < lineArr.length; i++) {
+        if (query === lineArr[i]) {
+          // T1
+          res['tier1'].push(convertRomanToHangyr(query))
+          includeFlag = true
+        }
+      }
+      if (includeFlag === false) {
+        // T3
+        for (i = 2; i < line.split(' ').length; i++) {
+          if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier3'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+            res['tier3'].push(convertRomanToHangyr(lineArr[i]))
+          }
+        }
+      }
+      includeFlag = false
+      // T2
+    } else if (query.replace(pattern, "").toLowerCase() === entryInLine) {
+      lineArr = line.split(' ')
+      for (i = 2; i < lineArr.length; i++) {
+        if (query.replace(pattern, "").toLowerCase() === lineArr[i]) {
+          if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+            res['tier2'].push(convertRomanToHangyr(lineArr[i]))
+          }
+        }
+      }
+      includeFlag = false
+      // T2
+    } else if (query.replace(pattern, "") === entryInLine) {
+      lineArr = line.split(' ')
+      for (i = 2; i < lineArr.length; i++) {
+        if (query.replace(pattern, "") === lineArr[i]) {
+          includeFlag = true
+          if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+            res['tier2'].push(convertRomanToHangyr(lineArr[i]))
+          }
+        }
+      }
+
+      // case5
+      if (includeFlag === false) {
+        for (i = 2; i < lineArr.length; i++) {
+          if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+            res['tier3'].push(convertRomanToHangyr(lineArr[i]))
+          }
+        }
+      }
+      includeFlag = false
+    }
+
+    candidates.map(candidate => {
+      if (candidate === entryInLine) {
+        lineArr = line.split(' ')
+        for (i = 2; i < lineArr.length; i++) {
+          if (candidate === lineArr[i]) {
+            includeFlag = true
+            if (res['tier1'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate)) === -1) {
+              // case4
+              res['tier3'].push(convertRomanToHangyr(candidate))
+            }
+          }
+        }
+        // T4
+        // case 7
+        if (includeFlag === false) {
+          for (i = 2; i < lineArr.length; i++) {
+            if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier3'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier4'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+              // case4
+              res['tier4'].push(convertRomanToHangyr(lineArr[i]))
+            }
+          }
+        }
+        includeFlag = false
+      } else if (candidate.replace(pattern, "") === entryInLine) {
+        lineArr = line.split(' ')
+        for (i = 2; i < lineArr.length; i++) {
+          if (candidate.replace(pattern, "") === lineArr[i]) {
+            includeFlag = true
+            if (res['tier1'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1) {
+              // case6
+              res['tier3'].push(convertRomanToHangyr(candidate.replace(pattern, "")))
+            }
+          }
+        }
+        if (includeFlag === false) {
+          for (i = 2; i < lineArr.length; i++) {
+            if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier3'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier4'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+              // case4
+              res['tier4'].push(convertRomanToHangyr(lineArr[i]))
+            }
+          }
+        }
+        includeFlag = false
+      }
+    })
+
+  }).on('close', function (err) {
+    console.log(res)
+    return res
+  })
+
+
+  // return res
+}
+
+// const candiSearch = (_res, _query) => {
+//   res = _res
+//   query = _query
+//   const pattern = /[^(가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9)]/gi
+//   const tokensOfQuery = Str.createTokensByDeletion(query)
+//   const candidates = tokensOfQuery['del1'].concat(tokensOfQuery['del2'])
+//   let res = {}
+//   res['tier1'] = []
+//   res['tier2'] = []
+//   res['tier3'] = []
+//   res['tier4'] = []
+//
+//
+//   var entryInLine
+//   let i
+//   let includeFlag = false
+//   let lineArr = []
+//
+//
+//   let rl = readline.createInterface({
+//     input: fs.createReadStream(conf.dict1DestPath)
+//   })
+//
+//
+//   candidates.map(candidate => {
+//     rl.on('line', function (line) {
+//       entryInLine = line.split(' ')[0]
+//
+//       if (candidate === entryInLine) {
+//         lineArr = line.split(' ')
+//         for (i = 2; i<lineArr.length; i++) {
+//           if (candidate === lineArr[i]) {
+//             if (res['tier1'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate)) === -1) {
+//               // case4
+//               res['tier3'].push((convertRomanToHangyr(candidate)))
+//             }
+//           }
+//         }
+//       } else if (candidate.replace(pattern, "")) {
+//         for (i = 2; i < lineArr.length; i++) {
+//           if (candidate.replace(pattern, "") === lineArr[i]) {
+//             if (res['tier1'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1) {
+//
+//             }
+//           }
+//         }
+//       }
+//     }).on('close', function (err) {
+//       console.log(err)
+//       return res
+//     })
+//   })
+
+
+// }
+
+
+const search2 = (_query) => {
+  const query = convertHangyrToRoman(_query)
+
+  // let dict = require('../assets/elementaryKorean.dict.json')
+
+
+  // regex to delete single quota '
+  const pattern = /[^(가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9)]/gi
+  const tokensOfQuery = Str.createTokensByDeletion(query)
+  const candidates = tokensOfQuery['del1'].concat(tokensOfQuery['delete2'])
   let res = {}
   res['tier1'] = []
   res['tier2'] = []
@@ -60,7 +258,6 @@ const search2 = (_query) => {
   // T2
   // case2
   // describtion above.
-  console.log([1], query.replace(pattern, "").toLowerCase())
   if (
     dict.hasOwnProperty(query.replace(pattern, "").toLowerCase())
     && dict[query.replace(pattern, "").toLowerCase()]['refer'].includes(query.replace(pattern, "").toLowerCase())
