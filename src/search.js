@@ -67,51 +67,61 @@ const search = (_query) => {
 
     if (query === entryInLine) {
       lineArr = line.split(' ')
-      for (i = 2; i < lineArr.length; i++) {
+      i = lineArr.indexOf('-lexrf') + 1
+      while (lineArr[i] !== '-rel') {
         if (query === lineArr[i]) {
           // T1
           res['tier1'].push(convertRomanToHangyr(query))
           includeFlag = true
         }
+        i++
       }
       if (includeFlag === false) {
-        // T3
-        for (i = 2; i < line.split(' ').length; i++) {
+        i = lineArr.indexOf('-lexrf') + 1
+        while (lineArr[i] !== '-rel') {
           if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier3'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+            // T3
             res['tier3'].push(convertRomanToHangyr(lineArr[i]))
           }
+          i++
         }
       }
       includeFlag = false
       // T2
     } else if (query.replace(pattern, "").toLowerCase() === entryInLine) {
       lineArr = line.split(' ')
-      for (i = 2; i < lineArr.length; i++) {
+      i = lineArr.indexOf('-lexrf') + 1
+      while (lineArr[i] !== '-rel') {
         if (query.replace(pattern, "").toLowerCase() === lineArr[i]) {
           if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
             res['tier2'].push(convertRomanToHangyr(lineArr[i]))
           }
         }
+        i++
       }
       includeFlag = false
       // T2
     } else if (query.replace(pattern, "") === entryInLine) {
       lineArr = line.split(' ')
-      for (i = 2; i < lineArr.length; i++) {
+      i = lineArr.indexOf('-lexrf') + 1
+      while (lineArr[i] !== '-rel') {
         if (query.replace(pattern, "") === lineArr[i]) {
           includeFlag = true
           if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
             res['tier2'].push(convertRomanToHangyr(lineArr[i]))
           }
         }
+        i++
       }
 
       // case5
       if (includeFlag === false) {
-        for (i = 2; i < lineArr.length; i++) {
-          if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
+        i = lineArr.indexOf('-lexrf') + 1
+        while (lineArr[i] !== '-rel') {
+          if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier3'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
             res['tier3'].push(convertRomanToHangyr(lineArr[i]))
           }
+          i++
         }
       }
       includeFlag = false
@@ -120,7 +130,8 @@ const search = (_query) => {
     candidates.map(candidate => {
       if (candidate === entryInLine) {
         lineArr = line.split(' ')
-        for (i = 2; i < lineArr.length; i++) {
+        i = lineArr.indexOf('-lexrf') + 1
+        while (lineArr[i] !== '-rel') {
           if (candidate === lineArr[i]) {
             includeFlag = true
             if (res['tier1'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate)) === -1) {
@@ -128,21 +139,25 @@ const search = (_query) => {
               res['tier3'].push(convertRomanToHangyr(candidate))
             }
           }
+          i++
         }
         // T4
         // case 7
         if (includeFlag === false) {
-          for (i = 2; i < lineArr.length; i++) {
+          i = lineArr.indexOf('-lexrf') + 1
+          while (lineArr[i] !== '-rel') {
             if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier3'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier4'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
               // case4
               res['tier4'].push(convertRomanToHangyr(lineArr[i]))
             }
+            i++
           }
         }
         includeFlag = false
       } else if (candidate.replace(pattern, "") === entryInLine) {
         lineArr = line.split(' ')
-        for (i = 2; i < lineArr.length; i++) {
+        i = lineArr.indexOf('-lexrf') + 1
+        while (lineArr[i] !== '-rel') {
           if (candidate.replace(pattern, "") === lineArr[i]) {
             includeFlag = true
             if (res['tier1'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1) {
@@ -150,13 +165,16 @@ const search = (_query) => {
               res['tier3'].push(convertRomanToHangyr(candidate.replace(pattern, "")))
             }
           }
+          i++
         }
         if (includeFlag === false) {
-          for (i = 2; i < lineArr.length; i++) {
+          i = lineArr.indexOf('-lexrf') + 1
+          while (lineArr[i] !== '-rel') {
             if (res['tier1'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier2'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier3'].indexOf(convertRomanToHangyr(lineArr[i])) === -1 && res['tier4'].indexOf(convertRomanToHangyr(lineArr[i])) === -1) {
               // case4
               res['tier4'].push(convertRomanToHangyr(lineArr[i]))
             }
+            i++
           }
         }
         includeFlag = false
@@ -164,69 +182,11 @@ const search = (_query) => {
     })
 
   }).on('close', function (err) {
-    console.log(res)
-    return res
+    console.log(removeOverlap(res))
+    return removeOverlap(res)
   })
 
-
-  // return res
 }
-
-// const candiSearch = (_res, _query) => {
-//   res = _res
-//   query = _query
-//   const pattern = /[^(가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9)]/gi
-//   const tokensOfQuery = Str.createTokensByDeletion(query)
-//   const candidates = tokensOfQuery['del1'].concat(tokensOfQuery['del2'])
-//   let res = {}
-//   res['tier1'] = []
-//   res['tier2'] = []
-//   res['tier3'] = []
-//   res['tier4'] = []
-//
-//
-//   var entryInLine
-//   let i
-//   let includeFlag = false
-//   let lineArr = []
-//
-//
-//   let rl = readline.createInterface({
-//     input: fs.createReadStream(conf.dict1DestPath)
-//   })
-//
-//
-//   candidates.map(candidate => {
-//     rl.on('line', function (line) {
-//       entryInLine = line.split(' ')[0]
-//
-//       if (candidate === entryInLine) {
-//         lineArr = line.split(' ')
-//         for (i = 2; i<lineArr.length; i++) {
-//           if (candidate === lineArr[i]) {
-//             if (res['tier1'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate)) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate)) === -1) {
-//               // case4
-//               res['tier3'].push((convertRomanToHangyr(candidate)))
-//             }
-//           }
-//         }
-//       } else if (candidate.replace(pattern, "")) {
-//         for (i = 2; i < lineArr.length; i++) {
-//           if (candidate.replace(pattern, "") === lineArr[i]) {
-//             if (res['tier1'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier2'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1 && res['tier3'].indexOf(convertRomanToHangyr(candidate.replace(pattern, ""))) === -1) {
-//
-//             }
-//           }
-//         }
-//       }
-//     }).on('close', function (err) {
-//       console.log(err)
-//       return res
-//     })
-//   })
-
-
-// }
 
 
 const search2 = (_query) => {
@@ -354,7 +314,30 @@ const search2 = (_query) => {
   })
 
 
+
+
   return res
+}
+
+const removeOverlap = (arr) => {
+  let i
+  for (i =0; i < arr['tier4'].length; i++) {
+    if (arr['tier1'].indexOf(arr['tier4'][i]) !==-1 || arr['tier2'].indexOf(arr['tier4'][i]) !== -1 || arr['tier3'].indexOf(arr['tier4'][i]) !== -1) {
+      arr['tier4'].splice(i, 1)
+    }
+  }
+  for (i =0; i < arr['tier3'].length; i++) {
+    if (arr['tier1'].indexOf(arr['tier3'][i]) !==-1 || arr['tier2'].indexOf(arr['tier3'][i]) !== -1) {
+      arr['tier3'].splice(i, 1)
+    }
+  }
+  for (i =0; i < arr['tier2'].length; i++) {
+    if (arr['tier1'].indexOf(arr['tier2'][i]) !==-1) {
+      arr['tier2'].splice(i, 1)
+    }
+  }
+
+  return arr
 }
 
 export default search
