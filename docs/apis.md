@@ -76,10 +76,16 @@ gagieg
  'gei','ggi', 'gge', 'aei', ..... }
 ```
 ```
-**** elementaryKorean.romanized.dict.json ****
-{"gagei":{"refer":["gagei","gangjei"]},"agei":{"refer":["gagei"]}, .....
+**** elementaryKorean.romanized.dict.txt ****
+gagei -pop 0 -tot 0 -lexrf gagei gangjei -rel
+agei -pop 0 -tot 0 -lexrf gagei -rel
+ggei -pop 0 -tot 0 -lexrf gagei gugjei gigiei -rel
+....
 ```
-위에서 'gagei'는 GenerateToken을 통해 최대 2번까지 delete연산으로 tokenSet을 만든다. 여기서 'gagei'는 각 tokenSet의 token의 refer가 된다. 따라서 'gagei' 의 refer 는 'gagei'이다. 또한 'gangjei'를 generatedToken을 통해 tokenSet을 만들면 'gagei'가 존재하기때문에 'gangjei'도 'gangei'의 refer에 포함되어 있는것을 확인 할 수 있다.
+위에서 'gagei'는 GenerateToken을 통해 최대 2번까지 delete연산으로 tokenSet을 만든다. 여기서 'gagei'는 각 tokenSet의 token의 -lexrf가 된다. 따라서 'gagei' 의 -lexrf 는 'gagei'이다. 또한 'gangjei'를 generatedToken을 통해 tokenSet을 만들면 'gagei'가 존재하기때문에 'gangjei'도 'gangei'의 -lexrf에 포함되어 있는것을 확인 할 수 있다.
+
+elementaryKorean.romanized.dict.txt는 key, -pop, -tot, [-lexrf], [-rel]으로 구성된다. 여기서 -pop은 최근 일정시간동안 key가 검색도어진 횟수를 저장하고 -tot은 누적횟수를 저장한다. 추후에 이러한 데이터를 이용해서 search기능을 발전시킬수 있는 데이터로 활용할 수 있다. -rel은 추후에 다른 key와의 관련성을 위해 사용될 예정이다.
+
 
 이렇게 생성된 elementaryKorean.romanized.dict.json은 앞으로 search기능을 사용하기위한 precalculation된 데이터로써 사용된다.
 
@@ -105,11 +111,13 @@ input과 dict(elementaryKorean.romanized.dict)를 비교하는 방식은 다음�
 7. delete(dict) === delete(input) ----> tier4
 8. delete(dict) === prco2(delete(input)) ----> tier4
 
-* ++dict++ : 사전 데이터
-* ++input++ : 사용자 쿼리
-* ++delete()++ : 최대 2번까지 지우는 연산을 통해 나오는 모든 경우
-* ++proc()++ : input값에 '안ㄴㅕㅇ'과 같이 끊어 들어온 경우와 대소문자를만 다른경우를 처리해주는 노말라이즈 함수 
-* ++proc2()++ : input값에 '안ㄴㅕㅇ'과 같이 끊어 들어온 경우를 처리해주는 노말라이즈 함수
+* dict : 사전 데이터
+* input : 사용자 쿼리
+* delete() : 최대 2번까지 지우는 연산을 통해 나오는 모든 경우
+* proc() : input값에 '안ㄴㅕㅇ'과 같이 끊어 들어온 경우와 대소문자를만 다른경우를 처리해주는 노말라이즈 함수 
+* proc2() : input값에 '안ㄴㅕㅇ'과 같이 끊어 들어온 경우를 처리해주는 노말라이즈 함수
+
+
 **tier1**이 되는 경우는 1의 경우이다. 1은 input자체가 올바른 데이터일 경우이다. 예를 들어 '안녕'은 dict에 존재하는 표준어이기 때문에 '안녕'일 확률이 가장 높다고 할 수 있다.
 
 **tier2**가 되는 경우는 2의 경우이다. 2는 input자체가 올바르지는 않지만 낱자로 들어온 경우나 대소문자가만 차이가 나는경우이다. 예를들어 '안ㄴㅕㅇ' 과 같이 입력한경우 '안녕'으로 판단하여'안녕'이 tier2에 나타나게 된다.
