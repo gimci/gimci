@@ -47,13 +47,13 @@ const stage0 = (dictSrcPath) => {
     line = String.removeWhiteSpaces(line) // for trailing space at the beginning of file
     tokens = String.createTokensByDeletion(line)
 
-    rl.output.write(`${line} -refer ${tokens.base}\n`) // write base
+    rl.output.write(`${line} -lexrf ${tokens.base}\n`) // write base
     // fs.appendFileSync(conf.dict0DestPath, line)
     for (i = 0; i < tokens.del1.length; i++) {
-      rl.output.write(`${tokens.del1[i]} -refer ${tokens.base}\n`) // write del1 tokens
+      rl.output.write(`${tokens.del1[i]} -lexrf ${tokens.base}\n`) // write del1 tokens
     }
     for (j = 0; j < tokens.del2.length; j++) {
-      rl.output.write(`${tokens.del2[j]} -refer ${tokens.base}\n`) // write del2 tokens
+      rl.output.write(`${tokens.del2[j]} -lexrf ${tokens.base}\n`) // write del2 tokens
     }
   })
     .on('close', function (err) {
@@ -79,7 +79,7 @@ const stage1 = (somePath) => {
 
   let entryInLine
   let newLine
-  let newLineArr = []
+  let processedLine = []
 
   // during some condition,
   let cond = true
@@ -95,16 +95,14 @@ const stage1 = (somePath) => {
 
     if (!processed.includes(entryInLine)) {
       processed.push(entryInLine)
-      newLineArr.push(line)
+      var lineArr = line.split(' ')
+      processedLine.push(`${lineArr[0]} -pop 0 -tot 0 ${lineArr[1]} ${lineArr[2]} -rel`)
     } else {
       for (i = 0; i < processed.length; i++) {
         if (entryInLine === processed[i]) {
           lineArr = line.split(' ')
-          newLine = newLineArr[i].split(' ')
-          if (newLine.indexOf(lineArr[2]) === -1) {
-            newLine.push(lineArr[2])
-          }
-          newLineArr[i] = newLine.join(' ')
+          newLine = processedLine[i].split(' ')
+          processedLine[i] = concatLexrf(lineArr, newLine)
         }
       }
     }
@@ -112,14 +110,62 @@ const stage1 = (somePath) => {
   })
     .on('close', function (err) {
       log('end stage1', err)
-      for (i = 0; i < newLineArr.length; i++) {
-        rl.output.write(`${newLineArr[i]}\n`)
+      for (i = 0; i < processedLine.length; i++) {
+        rl.output.write(`${processedLine[i]}\n`)
       }
       rl.close()
 
 
     })
 }
+
+
+/**
+ *  ConcatLexrf
+ *  return String after concatination -lexrf
+ */
+const concatLexrf = (lineArr, newLine) => {
+  let i = newLine.indexOf('-lexrf') + 1
+  // console.log(1, i, newLine)
+  if (i === 0) {
+    console.log(`Error in concatLexrf in ${lineArr}`)
+    return
+  }
+  var insertFlag = true
+
+  while (newLine[i] !== '-rel') {
+    if (getLexrf(lineArr) === newLine[i]) {
+      insertFlag = false
+    }
+    i++
+  }
+
+  if (insertFlag) {
+    // console.log(2, newLine[i-1], getLexrf(lineArr), newLine[i])
+    newLine[i] = getLexrf(lineArr)
+    newLine[i+1] = '-rel'
+    // console.log(3, newLine[i-1], getLexrf(lineArr), newLine[i])
+  }
+  // console.log(4, newLine.join(' '))
+  return newLine.join(' ')
+}
+
+/**
+ * GetLexrf
+ * return elem of -lexrf
+ */
+const getLexrf = (lineArr) => {
+  let i
+
+  for (i=0; i<lineArr.length; i++) {
+    if (lineArr[i] === '-lexrf') {
+      return lineArr[i+1]
+    }
+  }
+  console.log(`Error in get Lexrf in line ${lineArr}`)
+  return ''
+}
+
 
 /**
  *
