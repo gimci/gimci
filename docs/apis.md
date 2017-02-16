@@ -59,22 +59,35 @@ gaGgaUejida
 ```
 
 ### buildNew
-romanized된 txt파일의 정보를 json 형태의 데이터로 생성한다.
+romanized된 txt파일의 정보를 가공하여 특정 형태의 데이터로 생성한다.
 > (Romanize된 데이터를 가지고 하기때문에 한글로된 파일은 convertFileHangyrToRoman을 통해 로마자로 된 파일로 우선 변형하여야 한다.)
 
-json의 정보는 elementaryKorean.romanized.txt의 words정보를 가지고 최대 2번 오직 delete연산을 통해 변화가능한 모든 token을 json파일 형태로 저장한다. delete, insert, transpose, replace 를 최대 2번 수행하는  [Peter Norvig](http://norvig.com/spell-correct.html)알고리즘과는 다른 방식을 가진다. 이 json파일은은 key(base) 와 elem으로 구성되고 key는 모든 변형가능한 데이터(GenerateToken을 통해 생성된 모든token)이고 elem은 refer정보 즉, delete로 변형 되기 전의 word를(elementaryKorean.romanized.txt의 데이터) 가진다.
+dict파일의 정보는 elementaryKorean.romanized.txt의 words정보를 가지고 최대 2번 오직 delete연산을 통해 변화가능한 모든 token을 txt파일 형태로 저장한다.(json형태로 작업을 하였으나 용량이 커져 txt파일 형식을 사용한다.) delete, insert, transpose, replace 를 최대 2번 수행하는  [Peter Norvig](http://norvig.com/spell-correct.html)알고리즘과는 다른 방식을 가진다. 이 json파일은은 key(base) 와 elem으로 구성되고 key는 모든 변형가능한 데이터(GenerateToken을 통해 생성된 모든token)이고 elem은 refer정보 즉, delete로 변형 되기 전의 word를(elementaryKorean.romanized.txt의 데이터) 가진다.
 
+**0. romanized 데이터 준비**
 ```
 **** elementaryKorean.romanized.txt ****
 gagei
 gagieg
 ...
 ```
+**1. tokenSet 생성**
 ```
 **** tokenSet of 'gagei' ****
 {'gagei', agei', 'ggei', 'gaei', 'gagi', 'gage', 'gei', 'aei', 'agi','age',
  'gei','ggi', 'gge', 'aei', ..... }
 ```
+**2. tokenSet을 key(token), -lexrf(query) 형태로 나열**
+```
+**** elementaryKorean.romanized.preDict.txt ****
+gagei -lexrf gagei
+agei -lexrf gagei
+ggei -lexrf gagei
+gaei -lexrf gagei
+gagi -lexrf gagei
+....
+```
+**3. 같은 key끼리는 -lexrf를 병합하여 최종 데이터 생성**
 ```
 **** elementaryKorean.romanized.dict.txt ****
 gagei -pop 0 -tot 0 -lexrf gagei gangjei -rel
@@ -83,6 +96,8 @@ ggei -pop 0 -tot 0 -lexrf gagei gugjei gigiei -rel
 ....
 ```
 위에서 'gagei'는 GenerateToken을 통해 최대 2번까지 delete연산으로 tokenSet을 만든다. 여기서 'gagei'는 각 tokenSet의 token의 -lexrf가 된다. 따라서 'gagei' 의 -lexrf 는 'gagei'이다. 또한 'gangjei'를 generatedToken을 통해 tokenSet을 만들면 'gagei'가 존재하기때문에 'gangjei'도 'gangei'의 -lexrf에 포함되어 있는것을 확인 할 수 있다.
+
+elementaryKorean.romanized.preDict.txt는 key, -lexrf로 구성된다. 이 때에 key는 만들어진 tokenSet이고 -lexrf로 tokenSet의 원본데이터를 가진다. 이 데이터를 다시 병합하여 같은 key 값을 가지는 data끼리는 합치는 과정을 거쳐 최종 데이터인 elementaryKorean.romanized.dict.txt을 생성하게 된다.
 
 elementaryKorean.romanized.dict.txt는 key, -pop, -tot, [-lexrf], [-rel]으로 구성된다. 여기서 -pop은 최근 일정시간동안 key가 검색도어진 횟수를 저장하고 -tot은 누적횟수를 저장한다. 추후에 이러한 데이터를 이용해서 search기능을 발전시킬수 있는 데이터로 활용할 수 있다. -rel은 추후에 다른 key와의 관련성을 위해 사용될 예정이다.
 
