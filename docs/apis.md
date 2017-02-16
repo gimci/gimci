@@ -97,16 +97,21 @@ search('앉녕') -> { tier1: [], tier2: [ '안녕', '안정' ], tier3: [ '눈병
 input과 dict(elementaryKorean.romanized.dict)를 비교하는 방식은 다음과 같다.
 
 1. dict === input ----> tier1
-2. delete(dict) === input ----> tier2
-3. dict === delete(input) ----> tier2
-4. delete(dict) === delete(input) ----> tier3
-
+2. dict ==== proc(input) ----> tier2
+3. delete(dict) === input ----> tier3
+4. dict === delete(input) ----> tier3
+5. delete(dict) === input ----> tier3
+6. dict === delete(input) ----> tier3
+7. delete(dict) === delete(input) ----> tier4
+8. delete(dict) === prco(delete(input)) ----> tier4
 
 **tier1**이 되는 경우는 1의 경우이다. 1은 input자체가 올바른 데이터일 경우이다. 예를 들어 '안녕'은 dict에 존재하는 표준어이기 때문에 '안녕'일 확률이 가장 높다고 할 수 있다.
 
-**tier2**가 되는 경우는 2, 3의 경우이다. 2의 경우에는 input이 표준어는 표준어에서 delete를 통해 만들어진 경우이다. 3의 경우에는 input이 변형가능한 token들이 표준어일 경우이다. 예를 들어 '안넝'은 '안녕'에서 delete를 통해 생성가능하므로 이경우네는 2의 경우이다. 그리고 '앉녕'이라고 검색할경우 '앉녕'에서 delete를 통해 '안녕'이 되므로 이 경우에는 3의 경우이다.
+**tier2**가 되는 경우는 input자체가 올바르지는 않지만 이것이
 
-**tier3**이 되는 경우는 4의 경우이다. 4는 input만 delete를 하는것이아니라 표준어도 delete를 하여 표준어가 되는 경우이다.
+**tier3**가 되는 경우는 2, 3의 경우이다. 2의 경우에는 input이 표준어는 표준어에서 delete를 통해 만들어진 경우이다. 3의 경우에는 input이 변형가능한 token들이 표준어일 경우이다. 예를 들어 '안넝'은 '안녕'에서 delete를 통해 생성가능하므로 이경우네는 2의 경우이다. 그리고 '앉녕'이라고 검색할경우 '앉녕'에서 delete를 통해 '안녕'이 되므로 이 경우에는 3의 경우이다.
+
+**tier4**이 되는 경우는 4의 경우이다. 4는 input만 delete를 하는것이아니라 표준어도 delete를 하여 표준어가 되는 경우이다.
 예를 들어 input '안녕(Anneing)'은 delete를 통해 '안ㅕㅇ(Anieng)'이 될 수 있다. 또한 dict의 '안경(Angieng)'은 delete를 통해 '안ㅕㅇ(Anneing)'이 될 수 있으므로 이 경우가 4에 해당한다.
 
 
