@@ -21,3 +21,6 @@ npm install --save gimci
 
 ## Live Demo
 [Live Demo link](https://www.youtube.com/watch?v=ccoCD131Fb8)
+
+## API
+[API README](https://github.com/gimci/gimci/edit/temp/docs/api.md)
