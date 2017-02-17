@@ -143,6 +143,7 @@ input과 dict(elementaryKorean.romanized.dict)를 비교하는 방식은 다음�
 7. delete(dict) === delete(input) ----> tier4
 8. delete(dict) === prco2(delete(input)) ----> tier4
 
+
 * dict : 사전 데이터
 * input : 사용자 쿼리
 * delete() : 최대 2번까지 지우는 연산을 통해 나오는 모든 경우
