@@ -58,7 +58,7 @@ const search = (_query) => {
 
 
   let rl = readline.createInterface({
-    input: fs.createReadStream(conf.dict1DestPath)
+    input: fs.createReadStream('../assets/dict1.txt')
   })
 
   rl.on('line', function (line) {
