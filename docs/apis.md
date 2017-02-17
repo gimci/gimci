@@ -1,19 +1,17 @@
 # Application overall architecture
 ```
-convertHangyrToRoman(),
-convertRomanToHangyr(),
-getDistanceOfTwoWords(),
-search(),
-DictUtils: { 
- build() 
-},
-FileUtils: { 
- read(), 
- write() 
-},
-RomanizerUtils {
- convertRomanToHangyrFile()
-}
+Gimci
+|- convertHangyrToRoman(),
+|- convertRomanToHangyr(),
+|- getDistanceOfTwoWords(),
+|- search(),
+|- DictUtils
+  |- build() 
+|- FileUtils:
+  |- read(), 
+  |- write() 
+|- RomanizerUtils {
+  |- convertRomanToHangyrFile()
 ```
 
 #APIs
