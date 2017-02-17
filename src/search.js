@@ -34,7 +34,7 @@ import conf from './conf'
  */
 
 
-const search = (_query) => {
+const search = (_query, res) => {
   const query = convertHangyrToRoman(_query)
 
   // let dict = require('../assets/dict1.txt')
@@ -182,7 +182,10 @@ const search = (_query) => {
     })
 
   }).on('close', function (err) {
-    console.log(removeOverlap(res))
+    console.log(22, removeOverlap(res))
+    if (res) {
+      res.json(removeOverlap(res))
+    }
     return removeOverlap(res)
   })
 
