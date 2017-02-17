@@ -36,6 +36,7 @@ import conf from './conf'
 
 const search = (_query, cb) => {
   const query = convertHangyrToRoman(_query)
+  console.log(3, cb)
 
   // let dict = require('../assets/dict1.txt')
 
