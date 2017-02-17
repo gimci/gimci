@@ -1,6 +1,6 @@
 {
   "name": "gimci",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "Korean Natural Language Processing JavaScript library",
   "main": "./lib",
   "scripts": {
