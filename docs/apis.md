@@ -1,4 +1,23 @@
+# Application overall architecture
+```
+convertHangyrToRoman(),
+convertRomanToHangyr(),
+getDistanceOfTwoWords(),
+search(),
+DictUtils: { 
+ build() 
+},
+FileUtils: { 
+ read(), 
+ write() 
+},
+RomanizerUtils {
+ convertRomanToHangyrFile()
+}
+```
+
 #APIs
+
 ## convertHangyrToRoman
 한글을 구성하는 초성, 중성, 종성을 분리한 뒤 이를 전사법에 맞게 전사 한다. 일대일 대응의 기본적인 원칙 (i), 모든 경우 표현 (ii), 최소화 된 방식(iii)을 모두 만족 한다.
 ```
