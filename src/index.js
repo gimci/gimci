@@ -19,7 +19,7 @@ import search from './search'
 import { convertHangyrToRoman, convertRomanToHangyr } from './transcribe'
 import readline from 'readline'
 
-export {
+export default {
   conf,
   convertHangyrToRoman,
   convertRomanToHangyr,
