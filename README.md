@@ -18,6 +18,8 @@ Gimci is implemented in JavaScript, with the view of making i runnable at both w
 ```
 npm install --save gimci
 ```
+## Website
+[Gimci](https://gimci.github.io)
 
 ## Live Demo
 [Live Demo link](https://www.youtube.com/watch?v=ccoCD131Fb8)
