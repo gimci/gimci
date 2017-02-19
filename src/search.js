@@ -36,8 +36,6 @@ import conf from './conf'
 
 const search = (_query, cb) => {
   const query = convertHangyrToRoman(_query)
-  console.log(3, cb)
-
   // let dict = require('../assets/dict1.txt')
 
 
@@ -59,7 +57,7 @@ const search = (_query, cb) => {
 
 
   let rl = readline.createInterface({
-    input: fs.createReadStream('../assets/dict1.txt')
+    input: fs.createReadStream(`${global.__gimciBase}/assets/dict1.txt`)
   })
 
   rl.on('line', function (line) {

@@ -18,19 +18,14 @@ import conf from './conf'
 import search from './search'
 import { convertHangyrToRoman, convertRomanToHangyr } from './transcribe'
 import readline from 'readline'
+import path from 'path'
 
-export default {
-  conf,
-  convertHangyrToRoman,
-  convertRomanToHangyr,
-  getDistanceOfTwoWords,
-  search,
 
-  // utils
-  DictUtils,
-  FileUtils,
-  RomanizerUtils,
-}
+/**
+ * Path resolution.
+ */
+global.__gimciBase = path.resolve(__dirname, '..');
+
 
 /**
  * Development
@@ -49,4 +44,17 @@ if ((process.argv)[2] === 'dict') {
     rl.close();
     search(ans)
   });
+}
+
+export default {
+  conf,
+  convertHangyrToRoman,
+  convertRomanToHangyr,
+  getDistanceOfTwoWords,
+  search,
+
+  // utils
+  DictUtils,
+  FileUtils,
+  RomanizerUtils,
 }

@@ -3,7 +3,7 @@ import String from './StringUtils'
 import File from './FileUtils'
 import conf from '../conf'
 import readline from 'readline'
-import {log} from './LogUtils'
+import { log } from './LogUtils'
 import fs from 'fs'
 
 
@@ -27,12 +27,23 @@ const build = (dictSrcPath) => {
   stage0(dictSrcPath)
 
   // File.write(conf.dictDestPath, dict.getDict())
-  console.log('Finished building new dictionary', conf.dictDestPath)
+  log('Finished building new dictionary', conf.dictDestPath)
 }
 
 
 /**
+ * Generate a file that has all the entries with a single lexical reference.
  *
+ * e.g.
+ * (romanized.txt)
+ * foo
+ * bar
+ * ...
+ *
+ * => (dict0.txt)
+ * foo -lexrf foo
+ * fo -lexrf fo
+ * ...
  */
 const stage0 = (dictSrcPath) => {
   let tokens = {}
@@ -40,7 +51,6 @@ const stage0 = (dictSrcPath) => {
     input: fs.createReadStream(conf.dictSrcPath),
     output: fs.createWriteStream(conf.dict0DestPath, {'flags': 'a'})
   })
-  // let ws = fs.createWriteStream(conf.dict0DestPath, {'flags': 'a'})
   let i, j
 
   rl.on('line', function (line) {
@@ -48,7 +58,6 @@ const stage0 = (dictSrcPath) => {
     tokens = String.createTokensByDeletion(line)
 
     rl.output.write(`${line} -lexrf ${tokens.base}\n`) // write base
-    // fs.appendFileSync(conf.dict0DestPath, line)
     for (i = 0; i < tokens.del1.length; i++) {
       rl.output.write(`${tokens.del1[i]} -lexrf ${tokens.base}\n`) // write del1 tokens
     }
@@ -59,19 +68,81 @@ const stage0 = (dictSrcPath) => {
     .on('close', function (err) {
       log('end stage0', err)
       rl.close()
-
-
-      // stage1
-      stage1()
+      stage1() // stage1
     })
 }
+
+
+/**
+ * Write into multiple files each of which has word
+ * grouped by a starting letter.
+ * Note that the resulting file has unsorted data.
+ *
+ * e.g.
+ * (dict0)
+ * azxc
+ * bac
+ * bb
+ * ca
+ * aa
+ * cfz
+ *
+ * =>
+ * (dict_1a)
+ * azxc
+ * aa
+ */
+const stage1 = (path) => {
+
+  let rl = readline.createInterface({
+    input: fs.createReadStream(conf.dict0DestPath),
+  })
+
+  // Open multiple writestreams.
+  const out_a = openWriteStream('a');
+  // ...
+
+  rl.on('line', (line) => {
+    // if the line starts with a, then write in a
+    // out_a.write(something)
+
+    // else, if the line starts with letter 'x'
+    // out_x.write(something)
+  })
+    .on('close', (msg) => {
+      stage2()
+    })
+
+}
+
 
 /**
  *
  */
-const stage1 = (somePath) => {
+const stage2 = (rpath, char) => {
+
+  let rl = readline.createInterface({
+    input: fs.createReadStream(conf.dict0DestPath),
+  })
+
+  const out = openWriteStream(`out_2${char}`)
+
+  rl.on('line', (line) => {
+
+
+  })
+
+}
+
+const stage3 = 
+
+/**
+ *
+ */
+const stage_1 = (somePath) => {
 
   let processed = [] // Checked entry will go into the list
+
   let rl = readline.createInterface({
     input: fs.createReadStream(conf.dict0DestPath),
     output: fs.createWriteStream(conf.dict1DestPath, {'flags': 'a'})
@@ -122,6 +193,7 @@ const stage1 = (somePath) => {
 
 /**
  *  ConcatLexrf
+ *
  *  return String after concatination -lexrf
  */
 const concatLexrf = (lineArr, newLine) => {
@@ -168,64 +240,13 @@ const getLexrf = (lineArr) => {
 
 
 /**
+ * Takes a path of output file and open a writestream for that path.
  *
+ * e.g. path => writestream(path)
  */
-const sumEntryInstances = (rl, ws) => {
-  // Create a readstream again,
-  rl = readline.createInterface({
-    input: fs.createReadStream(conf.dictSrcPath)
-  })
-  // let entry = ''
-
-  rl.on('line', function (line) {
-    // if 'line' is not already taken entry, start processing
-    // add it to the 'entries'
-    // entry = line.split(' ')[0]
+openWriteStream = (path) => {
 
 
-    // process it
-  })
-    .on('close', function () {
-      // process again with the other entry
-      // sumEntryInstances()
-    })
-}
 
 
-/**
- * DEPRECATED
- *
- * Inner dictionary class that holds the data.
- * This class will not be seen from the outside.
- */
-class Dict {
-  constructor() {
-    this._dict = {}
-  }
-
-  /**
-   * todos
-   * Document should be made.
-   */
-  insert(word, base) {
-    if (!this._dict[word]) {
-      this._dict[word] = {refer: [base]}
-    } else {
-      if (this._dict[word]['refer'].indexOf(base) === -1) {
-        this._dict[word]['refer'].push(base)
-      }
-    }
-  }
-
-  /**
-   * ...
-   */
-  getDict() {
-    return this._dict
-  }
-}
-
-
-export default {
-  build
 }
