@@ -1,4 +1,21 @@
+# Application overall architecture
+```
+Gimci
+|- convertHangyrToRoman(),
+|- convertRomanToHangyr(),
+|- getDistanceOfTwoWords(),
+|- search(),
+|- DictUtils
+  |- build() 
+|- FileUtils:
+  |- read(), 
+  |- write() 
+|- RomanizerUtils {
+  |- convertRomanToHangyrFile()
+```
+
 #APIs
+
 ## convertHangyrToRoman
 한글을 구성하는 초성, 중성, 종성을 분리한 뒤 이를 전사법에 맞게 전사 한다. 일대일 대응의 기본적인 원칙 (i), 모든 경우 표현 (ii), 최소화 된 방식(iii)을 모두 만족 한다.
 ```
@@ -99,15 +116,15 @@ ggei -pop 0 -tot 0 -lexrf gagei gugjei gigiei -rel
 
 elementaryKorean.romanized.preDict.txt는 key, -lexrf로 구성된다. 이 때에 key는 만들어진 tokenSet이고 -lexrf로 tokenSet의 원본데이터를 가진다. 이 데이터를 다시 병합하여 같은 key 값을 가지는 data끼리는 합치는 과정을 거쳐 최종 데이터인 elementaryKorean.romanized.dict.txt을 생성하게 된다.
 
-elementaryKorean.romanized.dict.txt는 key, -pop, -tot, [-lexrf], [-rel]으로 구성된다. 여기서 -pop은 최근 일정시간동안 key가 검색도어진 횟수를 저장하고 -tot은 누적횟수를 저장한다. 추후에 이러한 데이터를 이용해서 search기능을 발전시킬수 있는 데이터로 활용할 수 있다. -rel은 추후에 다른 key와의 관련성을 위해 사용될 예정이다.
+elementaryKorean.romanized.dict.txt는 key, -pop, -tot, [-lexrf], [-rel]으로 구성된다. 여기서 -pop은 최근 일정시간동안 key가 검색된 횟수를 저장하고 -tot은 누적횟수를 저장한다. 추후에 이러한 데이터를 이용해서 search기능을 발전시킬 수 있는 데이터로 활용할 수 있다. -rel은 추후에 다른 key와의 관련성을 위해 사용될 예정이다.
 
 
-이렇게 생성된 elementaryKorean.romanized.dict.json은 앞으로 search기능을 사용하기위한 precalculation된 데이터로써 사용된다.
+이렇게 생성된 elementaryKorean.romanized.dict.txt는 앞으로 search기능을 사용하기위한 precalculation된 데이터로써 사용된다.
 
 
 
 ## Search
-입력한 단어에 대하여 예상 가능한 유사 단어를 추천해준다. 여러 후보중에 좀더 유사성이 높은 후보를 구분하기위해 tier1, tier2, tier3으로 나누어서 결과를 표시한다. tier1이 가장 비슷한 단어이고 다음으로 tier2, 3 이 차례로 높은 유사성을 가진다.
+입력한 단어에 대하여 예상 가능한 유사 단어를 추천해준다. 여러 후보중에 좀더 유사성이 높은 후보를 구분하기위해 tier1, tier2, tier3, tier4으로 나누어서 결과를 표시한다. tier1이 가장 비슷한 단어이고 다음으로 tier2, 3, 4이 차례로 높은 유사성을 가진다.
 
 모든 입력은 convertHangyrToRoman되어 처리되고 다시 결과는 convertRomanToHangyr을 통해 출력된다.
 ```
@@ -125,6 +142,7 @@ input과 dict(elementaryKorean.romanized.dict)를 비교하는 방식은 다음�
 6. dict === proc2(delete(input)) ----> tier3
 7. delete(dict) === delete(input) ----> tier4
 8. delete(dict) === prco2(delete(input)) ----> tier4
+
 
 * dict : 사전 데이터
 * input : 사용자 쿼리
@@ -144,4 +162,4 @@ input과 dict(elementaryKorean.romanized.dict)를 비교하는 방식은 다음�
 예를 들어 input '안녕(Anneing)'은 delete를 통해 '안ㅕㅇ(Anieng)'이 될 수 있다. 또한 dict의 '안경(Angieng)'은 delete를 통해 '안ㅕㅇ(Anneing)'이 될 수 있으므로 이 경우가 7에 해당한다. 8은 7의 경우와 유사하나 input에서 '안ㄴㅕㅇ'과 같이 잘못입력된경우를 처리하여 비교해 준다.
 
 
-우리가 이러한 연산을 빨리할 수 있는 이유는 사전에 buildNew()를 통해 dict를 precalculation하여 delete연산을 최대 2번까지 적용하여 만들어지는 모든 경우에 대한 데이터를(dict)를 사전에 생성하여 refer에 저장해 놓기 때문에 delete(dict)를 계산하지않고 input을 key로하여 해당하는 refer들만 비교하면 되기 떄문이다.
+우리가 이러한 연산을 빨리할 수 있는 이유는 사전에 buildNew()를 통해 dict를 precalculation하여 delete연산을 최대 2번까지 적용하여 만들어지는 모든 경우에 대한 데이터를(dict)를 사전에 생성하여 -lexrf에 저장해 놓기 때문에 delete(dict)를 계산하지않고 input을 key로하여 해당하는 -lexrf들만 비교하면 되기 떄문이다.
