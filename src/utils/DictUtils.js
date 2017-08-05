@@ -24,7 +24,7 @@ import fs from 'fs'
  */
 const build = (dictSrcPath) => {
 
-  stage0(dictSrcPath)
+  stage0(conf.dictSrcPath)
 
   // File.write(conf.dictDestPath, dict.getDict())
   console.log('Finished building new dictionary', conf.dictDestPath)
@@ -35,6 +35,7 @@ const build = (dictSrcPath) => {
  *
  */
 const stage0 = (dictSrcPath) => {
+  console.log('stage0 start', dictSrcPath);
   let tokens = {}
   let rl = readline.createInterface({
     input: fs.createReadStream(conf.dictSrcPath),
@@ -60,7 +61,6 @@ const stage0 = (dictSrcPath) => {
       log('end stage0', err)
       rl.close()
 
-
       // stage1
       stage1()
     })
@@ -70,6 +70,7 @@ const stage0 = (dictSrcPath) => {
  *
  */
 const stage1 = (somePath) => {
+  console.log('stage1 start')
 
   let processed = [] // Checked entry will go into the list
   let rl = readline.createInterface({

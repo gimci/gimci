@@ -37,6 +37,7 @@ export default {
  * takes the input and process as demanded.
  */
 if ((process.argv)[2] === 'dict') {
+  console.log("build dictionary")
   DictUtils.build()
 } else if ((process.argv)[2] === 'search') {
   const rl = readline.createInterface({
